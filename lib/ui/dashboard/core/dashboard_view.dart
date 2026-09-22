@@ -5,6 +5,8 @@ import 'package:dni_ecommerce_v2/config/app_colors.dart';
 import 'package:dni_ecommerce_v2/constant/app_constant.dart';
 import 'package:dni_ecommerce_v2/constant/ps_dimens.dart';
 import 'package:dni_ecommerce_v2/constant/route_paths.dart';
+import 'package:dni_ecommerce_v2/provider/user/user_provider.dart';
+import 'package:dni_ecommerce_v2/repository/user_repository.dart';
 import 'package:dni_ecommerce_v2/ui/dashboard/home/home_dashboard_view.dart';
 import 'package:dni_ecommerce_v2/utils/utils.dart';
 import 'package:dni_ecommerce_v2/viewobject/common/ps_value_holder.dart';
@@ -204,7 +206,8 @@ class _HomeViewState extends State<DashboardView>
   }
 
   // ShopInfoRepository shopInfoRepository;
-  // late UserRepository userRepository;
+  late UserRepository userRepository;
+  late UserProvider _userProvider;
   // late ProductRepository productRepository;
   late AppValueHolder valueHolder;
   // DeleteTaskRepository deleteTaskRepository;
@@ -215,7 +218,7 @@ class _HomeViewState extends State<DashboardView>
 
   @override
   Widget build(BuildContext context) {
-    // userRepository = Provider.of<UserRepository>(context);
+    userRepository = Provider.of<UserRepository>(context);
     valueHolder = Provider.of<AppValueHolder>(context);
     // productRepository = Provider.of<ProductRepository>(context);
     // basketRepository = Provider.of<BasketRepository>(context);
@@ -293,539 +296,941 @@ class _HomeViewState extends State<DashboardView>
       ),
     );
 
-    return WillPopScope(
-      onWillPop: _onWillPop,
-      child: Scaffold(
-        key: scaffoldKey,
-        drawer: Drawer(
-            // child: MultiProvider(
-            //   providers: <SingleChildWidget>[
-            //     ChangeNotifierProvider(
-            //   create: (_) => UserProvider(
-            //       repo: userRepository,
-            //       psValueHolder: valueHolder),
-            // )
-            //     // ChangeNotifierProvider<UserProvider>(
-            //     //   lazy: false,
-            //     //   create: (BuildContext context) {
-            //     //     return UserProvider(
-            //     //       repo: userRepository,
-            //     //       psValueHolder: valueHolder,
-            //     //     );
-            //     //   },
-            //     // ),
-            //   ],
-            //   // child: Text('data'),
-            //   child: Consumer<UserProvider>(
-            //     builder: (BuildContext context, UserProvider provider, Widget? child) {
-            //       // print(provider.psValueHolder.loginUserId);
-            //       return ListView(
-            //         padding: EdgeInsets.zero,
-            //         children: <Widget>[
-            //           _DrawerHeaderWidget(),
-            //           ListTile(
-            //             title: Text(Utils.getString('home__drawer_menu_home')),
-            //           ),
-            //           _DrawerMenuWidget(
-            //             icon: Icons.store,
-            //             title: Utils.getString('home__drawer_menu_home'),
-            //             index: AppConst.REQUEST_CODE__MENU_HOME_FRAGMENT,
-            //             onTap: (String title, int index) {
-            //               Navigator.pop(context);
-            //               updateSelectedIndexWithAnimation(
-            //                 Utils.getString('app_name'),
-            //                 index,
-            //               );
-            //             },
-            //           ),
-            //           _DrawerMenuWidget(
-            //             icon: Icons.category,
-            //             title: Utils.getString('home__drawer_menu_category'),
-            //             index: AppConst.REQUEST_CODE__MENU_CATEGORY_FRAGMENT,
-            //             onTap: (String title, int index) {
-            //               Navigator.pop(context);
-            //               updateSelectedIndexWithAnimation(title, index);
-            //             },
-            //           ),
-            //           _DrawerMenuWidget(
-            //             icon: Icons.schedule,
-            //             title: Utils.getString(
-            //               'home__drawer_menu_latest_product',
-            //             ),
-            //             index:
-            //                 AppConst.REQUEST_CODE__MENU_LATEST_PRODUCT_FRAGMENT,
-            //             onTap: (String title, int index) {
-            //               Navigator.pop(context);
-            //               updateSelectedIndexWithAnimation(title, index);
-            //             },
-            //           ),
-            //           _DrawerMenuWidget(
-            //             //icon: Feather.percent,
-            //             icon: Icons.sort,
-            //             title: Utils.getString(
-            //               'home__drawer_menu_discount_product',
-            //             ),
-            //             index:
-            //                 AppConst.REQUEST_CODE__MENU_DISCOUNT_PRODUCT_FRAGMENT,
-            //             onTap: (String title, int index) {
-            //               Navigator.pop(context);
-            //               updateSelectedIndexWithAnimation(title, index);
-            //             },
-            //           ),
-            //           // _DrawerMenuWidget(
-            //           //     icon: FontAwesome5.gem,
-            //           //     title:
-            //           //         Utils.getString('home__menu_drawer_featured_product'),
-            //           //     index:
-            //           //         AppConst.REQUEST_CODE__MENU_FEATURED_PRODUCT_FRAGMENT,
-            //           //     onTap: (String title, int index) {
-            //           //       Navigator.pop(context);
-            //           //       updateSelectedIndexWithAnimation(title, index);
-            //           //     }),
-            //           // _DrawerMenuWidget(
-            //           //     icon: Icons.trending_up,
-            //           //     title:
-            //           //         Utils.getString('home__drawer_menu_trending_product'),
-            //           //     index:
-            //           //         AppConst.REQUEST_CODE__MENU_TRENDING_PRODUCT_FRAGMENT,
-            //           //     onTap: (String title, int index) {
-            //           //       Navigator.pop(context);
-            //           //       updateSelectedIndexWithAnimation(title, index);
-            //           //     }),
-            //           // _DrawerMenuWidget(
-            //           //     icon: Icons.folder_open,
-            //           //     title: Utils.getString('home__menu_drawer_collection'),
-            //           //     index: AppConst.REQUEST_CODE__MENU_COLLECTION_FRAGMENT,
-            //           //     onTap: (String title, int index) {
-            //           //       Navigator.pop(context);
-            //           //       updateSelectedIndexWithAnimation(title, index);
-            //           //     }),
-            //           const Divider(height: AppDimens.space1),
-            //           ListTile(
-            //             title: Text(
-            //               Utils.getString('home__menu_drawer_user_info'),
-            //             ),
-            //           ),
-            //           _DrawerMenuWidget(
-            //             icon: Icons.person,
-            //             title: Utils.getString('home__menu_drawer_profile'),
-            //             index: AppConst
-            //                 .REQUEST_CODE__MENU_SELECT_WHICH_USER_FRAGMENT,
-            //             onTap: (String title, int index) {
-            //               Navigator.pop(context);
-            //               title =
-            //                   (valueHolder == null ||
-            //                       valueHolder.userIdToVerify == null ||
-            //                       valueHolder.userIdToVerify == '')
-            //                   ? Utils.getString('home__menu_drawer_profile')
-            //                   : Utils.getString(
-            //                       'home__bottom_app_bar_verify_email',
-            //                     );
-            //               updateSelectedIndexWithAnimation(title, index);
-            //             },
-            //           ),
-            //           if (provider != null)
-            //             if (provider.psValueHolder.loginUserId != null &&
-            //                 provider.psValueHolder.loginUserId != '')
-            //               Visibility(
-            //                 visible: true,
-            //                 child: _DrawerMenuWidget(
-            //                   icon: Icons.favorite_border,
-            //                   title: Utils.getString(
-            //                     'home__menu_drawer_favourite',
-            //                   ),
-            //                   index:
-            //                       AppConst.REQUEST_CODE__MENU_FAVOURITE_FRAGMENT,
-            //                   onTap: (String title, int index) {
-            //                     Navigator.pop(context);
-            //                     updateSelectedIndexWithAnimation(title, index);
-            //                   },
-            //                 ),
-            //               ),
-            //           if (provider != null)
-            //             if (provider.psValueHolder.loginUserId != null &&
-            //                 provider.psValueHolder.loginUserId != '')
-            //               Visibility(
-            //                 visible: true,
-            //                 child: _DrawerMenuWidget(
-            //                   icon: Icons.swap_horiz,
-            //                   title: Utils.getString(
-            //                     'home__menu_drawer_transaction',
-            //                   ),
-            //                   index: AppConst
-            //                       .REQUEST_CODE__MENU_TRANSACTION_FRAGMENT,
-            //                   onTap: (String title, int index) {
-            //                     Navigator.pop(context);
-            //                     updateSelectedIndexWithAnimation(title, index);
-            //                   },
-            //                 ),
-            //               ),
-            //           // if (provider != null)
-            //           //   if (provider.psValueHolder.loginUserId != null &&
-            //           //       provider.psValueHolder.loginUserId != '')
-            //           //     Visibility(
-            //           //       visible: true,
-            //           //       child: _DrawerMenuWidget(
-            //           //           icon: Icons.book,
-            //           //           title: Utils.getString(
-            //           //               'home__menu_drawer_user_history'),
-            //           //           index: AppConst
-            //           //               .REQUEST_CODE__MENU_USER_HISTORY_FRAGMENT,
-            //           //           onTap: (String title, int index) {
-            //           //             Navigator.pop(context);
-            //           //             updateSelectedIndexWithAnimation(title, index);
-            //           //           }),
-            //           //     ),
-            //           if (provider != null)
-            //             if (provider.psValueHolder.loginUserId != null &&
-            //                 provider.psValueHolder.loginUserId != '')
-            //               Visibility(
-            //                 visible: true,
-            //                 child: ListTile(
-            //                   leading: Icon(
-            //                     Icons.power_settings_new,
-            //                     color: AppColors.mainColorWithWhite,
-            //                   ),
-            //                   title: Text(
-            //                     Utils.getString('home__menu_drawer_logout'),
-            //                     style: Theme.of(context).textTheme.bodyMedium,
-            //                   ),
-            //                   onTap: () async {
-            //                     Navigator.pop(context);
-            //                     showDialog<dynamic>(
-            //                       context: context,
-            //                       builder: (BuildContext context) {
-            //                         return ConfirmDialogView(
-            //                           description: Utils.getString(
-            //                             'home__logout_dialog_description',
-            //                           ),
-            //                           leftButtonText: Utils.getString(
-            //                             'home__logout_dialog_cancel_button',
-            //                           ),
-            //                           rightButtonText: Utils.getString(
-            //                             'home__logout_dialog_ok_button',
-            //                           ),
-            //                           onAgreeTap: () async {
-            //                             Navigator.of(context).pop();
-            //                             setState(() {
-            //                               _currentIndex = AppConst
-            //                                   .REQUEST_CODE__MENU_HOME_FRAGMENT;
-            //                             });
-            //                             await provider.replaceLoginUserId('');
-            //                             // await fb_auth.FirebaseAuth.instance
-            //                             //     .signOut();//lynn
-            //                           },
-            //                         );
-            //                       },
-            //                     );
-            //                   },
-            //                 ),
-            //               ),
-            //           const Divider(height: AppDimens.space1),
-            //           ListTile(
-            //             title: Text(Utils.getString('home__menu_drawer_app')),
-            //           ),
-            //           _DrawerMenuWidget(
-            //             icon: Icons.g_translate,
-            //             title: Utils.getString('home__menu_drawer_language'),
-            //             index: AppConst.REQUEST_CODE__MENU_LANGUAGE_FRAGMENT,
-            //             onTap: (String title, int index) {
-            //               Navigator.pop(context);
-            //               updateSelectedIndexWithAnimation('', index);
-            //             },
-            //           ),
-            //           _DrawerMenuWidget(
-            //             icon: Icons.contacts,
-            //             title: Utils.getString('home__menu_drawer_contact_us'),
-            //             index: AppConst.REQUEST_CODE__MENU_CONTACT_US_FRAGMENT,
-            //             onTap: (String title, int index) {
-            //               Navigator.pop(context);
-            //               updateSelectedIndexWithAnimation(title, index);
-            //             },
-            //           ),
-            //           _DrawerMenuWidget(
-            //             icon: Icons.settings,
-            //             title: Utils.getString('home__menu_drawer_setting'),
-            //             index: AppConst.REQUEST_CODE__MENU_SETTING_FRAGMENT,
-            //             onTap: (String title, int index) {
-            //               Navigator.pop(context);
-            //               updateSelectedIndexWithAnimation(title, index);
-            //             },
-            //           ),
-            //           // _DrawerMenuWidget(
-            //           //     icon: Icons.info_outline,
-            //           //     title: Utils.getString('privacy_policy__toolbar_name'),
-            //           //     index: AppConst
-            //           //         .REQUEST_CODE__MENU_TERMS_AND_CONDITION_FRAGMENT,
-            //           //     onTap: (String title, int index) {
-            //           //       Navigator.pop(context);
-            //           //       updateSelectedIndexWithAnimation(title, index);
-            //           //     }),
-            //           ListTile(
-            //             leading: Icon(
-            //               Icons.share,
-            //               color: AppColors.mainColorWithWhite,
-            //             ),
-            //             title: Text(
-            //               Utils.getString('home__menu_drawer_share_this_app'),
-            //               style: Theme.of(context).textTheme.bodyMedium,
-            //             ),
-            //             onTap: () {
-            //               Navigator.pop(context);
-            //               if (Platform.isIOS) {
-            //                 Utils.launchAppStoreURL(
-            //                   iOSAppId: AppConfig.iOSAppStoreId,
-            //                   writeReview: true,
-            //                 );
-            //               } else {
-            //                 Utils.launchURL();
-            //               }
-            //             },
-            //           ),
-            //           // ListTile(
-            //           //   leading: Icon(
-            //           //     Icons.star_border,
-            //           //     color: AppColors.mainColorWithWhite,
-            //           //   ),
-            //           //   title: Text(
-            //           //     Utils.getString('home__menu_drawer_rate_this_app'),
-            //           //     style: Theme.of(context).textTheme.bodyText2,
-            //           //   ),
-            //           //   onTap: () {
-            //           //     // Navigator.pop(context);
-            //           //     // if (Platform.isIOS) {
-            //           //     //   Utils.launchAppStoreURL(
-            //           //     //       iOSAppId: AppConfig.iOSAppStoreId,
-            //           //     //       writeReview: true);
-            //           //     // } else {
-            //           //     //   Utils.launchURL();
-            //           //     // }
-            //           //   },
-            //           // )
-            //         ],
-            //       );
-            //     },
-            //   ),
-
-            // ),
+    return Scaffold(
+      key: scaffoldKey,
+      drawer: Drawer(
+        child: MultiProvider(
+          providers: <SingleChildWidget>[
+            ChangeNotifierProvider(
+              create: (_) => UserProvider(
+                  repo: userRepository,
+                  psValueHolder: valueHolder),
             ),
-        appBar: AppBar(
-          backgroundColor:
-              (appBarTitle == Utils.getString('home__verify_email') ||
-                      appBarTitle == Utils.getString('home_verify_phone'))
-                  ? AppColors.mainColor
-                  : AppColors.baseColor,
-          title: Text(
-            appBarTitle,
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: (appBarTitle ==
-                              Utils.getString('home__verify_email') ||
-                          appBarTitle == Utils.getString('home_verify_phone'))
-                      ? AppColors.white
-                      : AppColors.mainColorWithWhite,
-                ),
+            // ChangeNotifierProvider<UserProvider>(
+            //     lazy: false,
+            //     create: (BuildContext context) {
+            //       _userProvider = UserProvider(
+            //           repo: userRepository,
+            //           psValueHolder: valueHolder);
+            //       return _userProvider;
+            //     }),
+          ],
+          child: Consumer<UserProvider>(
+            builder:
+                (BuildContext context, UserProvider provider, Widget? child) {
+              print(provider.psValueHolder.loginUserId);
+              return ListView(
+                padding: EdgeInsets.zero,
+                children: <Widget>[
+                  _DrawerHeaderWidget(),
+                  ListTile(
+                    title: Text(Utils.getString('home__drawer_menu_home')),
+                  ),
+                  _DrawerMenuWidget(
+                    icon: Icons.store,
+                    title: Utils.getString('home__drawer_menu_home'),
+                    index: AppConst.REQUEST_CODE__MENU_HOME_FRAGMENT,
+                    onTap: (String title, int index) {
+                      Navigator.pop(context);
+                      updateSelectedIndexWithAnimation(
+                        Utils.getString('app_name'),
+                        index,
+                      );
+                    },
+                  ),
+                  _DrawerMenuWidget(
+                    icon: Icons.category,
+                    title: Utils.getString('home__drawer_menu_category'),
+                    index: AppConst.REQUEST_CODE__MENU_CATEGORY_FRAGMENT,
+                    onTap: (String title, int index) {
+                      Navigator.pop(context);
+                      updateSelectedIndexWithAnimation(title, index);
+                    },
+                  ),
+                  _DrawerMenuWidget(
+                    icon: Icons.schedule,
+                    title: Utils.getString(
+                      'home__drawer_menu_latest_product',
+                    ),
+                    index: AppConst.REQUEST_CODE__MENU_LATEST_PRODUCT_FRAGMENT,
+                    onTap: (String title, int index) {
+                      Navigator.pop(context);
+                      updateSelectedIndexWithAnimation(title, index);
+                    },
+                  ),
+                  _DrawerMenuWidget(
+                    //icon: Feather.percent,
+                    icon: Icons.sort,
+                    title: Utils.getString(
+                      'home__drawer_menu_discount_product',
+                    ),
+                    index:
+                        AppConst.REQUEST_CODE__MENU_DISCOUNT_PRODUCT_FRAGMENT,
+                    onTap: (String title, int index) {
+                      Navigator.pop(context);
+                      updateSelectedIndexWithAnimation(title, index);
+                    },
+                  ),
+                  // _DrawerMenuWidget(
+                  //     icon: FontAwesome5.gem,
+                  //     title:
+                  //         Utils.getString('home__menu_drawer_featured_product'),
+                  //     index:
+                  //         AppConst.REQUEST_CODE__MENU_FEATURED_PRODUCT_FRAGMENT,
+                  //     onTap: (String title, int index) {
+                  //       Navigator.pop(context);
+                  //       updateSelectedIndexWithAnimation(title, index);
+                  //     }),
+                  // _DrawerMenuWidget(
+                  //     icon: Icons.trending_up,
+                  //     title:
+                  //         Utils.getString('home__drawer_menu_trending_product'),
+                  //     index:
+                  //         AppConst.REQUEST_CODE__MENU_TRENDING_PRODUCT_FRAGMENT,
+                  //     onTap: (String title, int index) {
+                  //       Navigator.pop(context);
+                  //       updateSelectedIndexWithAnimation(title, index);
+                  //     }),
+                  // _DrawerMenuWidget(
+                  //     icon: Icons.folder_open,
+                  //     title: Utils.getString('home__menu_drawer_collection'),
+                  //     index: AppConst.REQUEST_CODE__MENU_COLLECTION_FRAGMENT,
+                  //     onTap: (String title, int index) {
+                  //       Navigator.pop(context);
+                  //       updateSelectedIndexWithAnimation(title, index);
+                  //     }),
+                  const Divider(height: AppDimens.space1),
+                  ListTile(
+                    title: Text(
+                      Utils.getString('home__menu_drawer_user_info'),
+                    ),
+                  ),
+                  _DrawerMenuWidget(
+                    icon: Icons.person,
+                    title: Utils.getString('home__menu_drawer_profile'),
+                    index:
+                        AppConst.REQUEST_CODE__MENU_SELECT_WHICH_USER_FRAGMENT,
+                    onTap: (String title, int index) {
+                      Navigator.pop(context);
+                      title = (valueHolder == null ||
+                              valueHolder.userIdToVerify == null ||
+                              valueHolder.userIdToVerify == '')
+                          ? Utils.getString('home__menu_drawer_profile')
+                          : Utils.getString(
+                              'home__bottom_app_bar_verify_email',
+                            );
+                      updateSelectedIndexWithAnimation(title, index);
+                    },
+                  ),
+                  if (provider != null)
+                    if (provider.psValueHolder.loginUserId != null &&
+                        provider.psValueHolder.loginUserId != '')
+                      Visibility(
+                        visible: true,
+                        child: _DrawerMenuWidget(
+                          icon: Icons.favorite_border,
+                          title: Utils.getString(
+                            'home__menu_drawer_favourite',
+                          ),
+                          index: AppConst.REQUEST_CODE__MENU_FAVOURITE_FRAGMENT,
+                          onTap: (String title, int index) {
+                            Navigator.pop(context);
+                            updateSelectedIndexWithAnimation(title, index);
+                          },
+                        ),
+                      ),
+                  if (provider != null)
+                    if (provider.psValueHolder.loginUserId != null &&
+                        provider.psValueHolder.loginUserId != '')
+                      Visibility(
+                        visible: true,
+                        child: _DrawerMenuWidget(
+                          icon: Icons.swap_horiz,
+                          title: Utils.getString(
+                            'home__menu_drawer_transaction',
+                          ),
+                          index:
+                              AppConst.REQUEST_CODE__MENU_TRANSACTION_FRAGMENT,
+                          onTap: (String title, int index) {
+                            Navigator.pop(context);
+                            updateSelectedIndexWithAnimation(title, index);
+                          },
+                        ),
+                      ),
+                  // if (provider != null)
+                  //   if (provider.psValueHolder.loginUserId != null &&
+                  //       provider.psValueHolder.loginUserId != '')
+                  //     Visibility(
+                  //       visible: true,
+                  //       child: _DrawerMenuWidget(
+                  //           icon: Icons.book,
+                  //           title: Utils.getString(
+                  //               'home__menu_drawer_user_history'),
+                  //           index: AppConst
+                  //               .REQUEST_CODE__MENU_USER_HISTORY_FRAGMENT,
+                  //           onTap: (String title, int index) {
+                  //             Navigator.pop(context);
+                  //             updateSelectedIndexWithAnimation(title, index);
+                  //           }),
+                  //     ),
+                  if (provider != null)
+                    if (provider.psValueHolder.loginUserId != null &&
+                        provider.psValueHolder.loginUserId != '')
+                      Visibility(
+                        visible: true,
+                        child: ListTile(
+                          leading: Icon(
+                            Icons.power_settings_new,
+                            color: AppColors.mainColorWithWhite,
+                          ),
+                          title: Text(
+                            Utils.getString('home__menu_drawer_logout'),
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                          onTap: () async {
+                            // Navigator.pop(context);
+                            // showDialog<dynamic>(
+                            //   context: context,
+                            //   builder: (BuildContext context) {
+                            //     return ConfirmDialogView(
+                            //       description: Utils.getString(
+                            //         'home__logout_dialog_description',
+                            //       ),
+                            //       leftButtonText: Utils.getString(
+                            //         'home__logout_dialog_cancel_button',
+                            //       ),
+                            //       rightButtonText: Utils.getString(
+                            //         'home__logout_dialog_ok_button',
+                            //       ),
+                            //       onAgreeTap: () async {
+                            //         Navigator.of(context).pop();
+                            //         setState(() {
+                            //           _currentIndex = AppConst
+                            //               .REQUEST_CODE__MENU_HOME_FRAGMENT;
+                            //         });
+                            //         await provider.replaceLoginUserId('');
+                            //         // await fb_auth.FirebaseAuth.instance
+                            //         //     .signOut();//lynn
+                            //       },
+                            //     );
+
+                            //   },
+                            // );
+                          },
+                        ),
+                      ),
+                  const Divider(height: AppDimens.space1),
+                  ListTile(
+                    title: Text(Utils.getString('home__menu_drawer_app')),
+                  ),
+                  _DrawerMenuWidget(
+                    icon: Icons.g_translate,
+                    title: Utils.getString('home__menu_drawer_language'),
+                    index: AppConst.REQUEST_CODE__MENU_LANGUAGE_FRAGMENT,
+                    onTap: (String title, int index) {
+                      Navigator.pop(context);
+                      updateSelectedIndexWithAnimation('', index);
+                    },
+                  ),
+                  _DrawerMenuWidget(
+                    icon: Icons.contacts,
+                    title: Utils.getString('home__menu_drawer_contact_us'),
+                    index: AppConst.REQUEST_CODE__MENU_CONTACT_US_FRAGMENT,
+                    onTap: (String title, int index) {
+                      Navigator.pop(context);
+                      updateSelectedIndexWithAnimation(title, index);
+                    },
+                  ),
+                  _DrawerMenuWidget(
+                    icon: Icons.settings,
+                    title: Utils.getString('home__menu_drawer_setting'),
+                    index: AppConst.REQUEST_CODE__MENU_SETTING_FRAGMENT,
+                    onTap: (String title, int index) {
+                      Navigator.pop(context);
+                      updateSelectedIndexWithAnimation(title, index);
+                    },
+                  ),
+                  // _DrawerMenuWidget(
+                  //     icon: Icons.info_outline,
+                  //     title: Utils.getString('privacy_policy__toolbar_name'),
+                  //     index: AppConst
+                  //         .REQUEST_CODE__MENU_TERMS_AND_CONDITION_FRAGMENT,
+                  //     onTap: (String title, int index) {
+                  //       Navigator.pop(context);
+                  //       updateSelectedIndexWithAnimation(title, index);
+                  //     }),
+                  ListTile(
+                    leading: Icon(
+                      Icons.share,
+                      color: AppColors.mainColorWithWhite,
+                    ),
+                    title: Text(
+                      Utils.getString('home__menu_drawer_share_this_app'),
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    onTap: () {
+                      // Navigator.pop(context);
+                      // if (Platform.isIOS) {
+                      //   Utils.launchAppStoreURL(
+                      //     iOSAppId: AppConfig.iOSAppStoreId,
+                      //     writeReview: true,
+                      //   );
+                      // } else {
+                      //   Utils.launchURL();
+                      // }
+                    },
+                  ),
+                  // ListTile(
+                  //   leading: Icon(
+                  //     Icons.star_border,
+                  //     color: AppColors.mainColorWithWhite,
+                  //   ),
+                  //   title: Text(
+                  //     Utils.getString('home__menu_drawer_rate_this_app'),
+                  //     style: Theme.of(context).textTheme.bodyText2,
+                  //   ),
+                  //   onTap: () {
+                  //     // Navigator.pop(context);
+                  //     // if (Platform.isIOS) {
+                  //     //   Utils.launchAppStoreURL(
+                  //     //       iOSAppId: AppConfig.iOSAppStoreId,
+                  //     //       writeReview: true);
+                  //     // } else {
+                  //     //   Utils.launchURL();
+                  //     // }
+                  //   },
+                  // )
+                ],
+              );
+            },
           ),
-          titleSpacing: 0,
-          elevation: 0,
-          iconTheme: IconThemeData(
-            color: (appBarTitle == Utils.getString('home__verify_email') ||
+        ),
+      ),
+      appBar: AppBar(
+        backgroundColor:
+            (appBarTitle == Utils.getString('home__verify_email') ||
                     appBarTitle == Utils.getString('home_verify_phone'))
-                ? AppColors.white
-                : AppColors.mainColorWithWhite,
-          ),
-          // textTheme: Theme.of(context).textTheme,//lynn
-          // brightness: Utils.getBrightnessForAppBar(context),
-          // actions: <Widget>[
-          //   ChangeNotifierProvider<BasketProvider>(
+                ? AppColors.mainColor
+                : AppColors.baseColor,
+        title: Text(
+          appBarTitle,
+          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: (appBarTitle == Utils.getString('home__verify_email') ||
+                        appBarTitle == Utils.getString('home_verify_phone'))
+                    ? AppColors.white
+                    : AppColors.mainColorWithWhite,
+              ),
+        ),
+        titleSpacing: 0,
+        elevation: 0,
+        iconTheme: IconThemeData(
+          color: (appBarTitle == Utils.getString('home__verify_email') ||
+                  appBarTitle == Utils.getString('home_verify_phone'))
+              ? AppColors.white
+              : AppColors.mainColorWithWhite,
+        ),
+        // textTheme: Theme.of(context).textTheme,//lynn
+        // brightness: Utils.getBrightnessForAppBar(context),
+        // actions: <Widget>[
+        //   ChangeNotifierProvider<BasketProvider>(
+        //     lazy: false,
+        //     create: (BuildContext context) {
+        //       final BasketProvider provider = BasketProvider(
+        //         repo: basketRepository!,
+        //       );
+        //       provider.loadBasketList();
+        //       return provider;
+        //     },
+        //     child: Consumer<BasketProvider>(
+        //       builder:
+        //           (
+        //             BuildContext context,
+        //             BasketProvider basketProvider,
+        //             Widget? child,
+        //           ) {
+        //             return InkWell(
+        //               child: Stack(
+        //                 children: <Widget>[
+        //                   Container(
+        //                     width: AppDimens.space40,
+        //                     height: AppDimens.space40,
+        //                     margin: const EdgeInsets.only(
+        //                       top: AppDimens.space8,
+        //                       left: AppDimens.space8,
+        //                       right: AppDimens.space8,
+        //                     ),
+        //                     child: Align(
+        //                       alignment: Alignment.center,
+        //                       child: Icon(
+        //                         Icons.shopping_basket,
+        //                         color: AppColors.mainColor,
+        //                       ),
+        //                     ),
+        //                   ),
+        //                   Positioned(
+        //                     right: AppDimens.space4,
+        //                     top: AppDimens.space1,
+        //                     child: Container(
+        //                       width: AppDimens.space28,
+        //                       height: AppDimens.space28,
+        //                       decoration: BoxDecoration(
+        //                         shape: BoxShape.circle,
+        //                         color: AppColors.black!.withAlpha(200),
+        //                       ),
+        //                       child: Align(
+        //                         alignment: Alignment.center,
+        //                         child: Text(
+        //                           basketProvider.basketList.data!.length > 99
+        //                               ? '99+'
+        //                               : basketProvider.basketList.data!.length
+        //                                     .toString(),
+        //                           textAlign: TextAlign.left,
+        //                           style: Theme.of(context)
+        //                               .textTheme
+        //                               .bodyLarge!
+        //                               .copyWith(color: AppColors.white),
+        //                           maxLines: 1,
+        //                         ),
+        //                       ),
+        //                     ),
+        //                   ),
+        //                 ],
+        //               ),
+        //               onTap: () {
+        //                 Navigator.pushNamed(context, RoutePaths.basketList);
+        //               },
+        //             );
+        //           },
+        //     ),
+        //   ),
+        // ],
+      ),
+      bottomNavigationBar: _currentIndex ==
+                  AppConst.REQUEST_CODE__MENU_HOME_FRAGMENT ||
+              // _currentIndex ==
+              //     AppConst.REQUEST_CODE__DASHBOARD_SHOP_INFO_FRAGMENT ||
+              _currentIndex ==
+                  AppConst.REQUEST_CODE__DASHBOARD_SELECT_WHICH_USER_FRAGMENT ||
+              _currentIndex ==
+                  AppConst
+                      .REQUEST_CODE__DASHBOARD_USER_PROFILE_FRAGMENT || //go to profile
+              _currentIndex ==
+                  AppConst
+                      .REQUEST_CODE__DASHBOARD_FORGOT_PASSWORD_FRAGMENT || //go to forgot password
+              _currentIndex ==
+                  AppConst
+                      .REQUEST_CODE__DASHBOARD_REGISTER_FRAGMENT || //go to register
+              _currentIndex ==
+                  AppConst
+                      .REQUEST_CODE__DASHBOARD_VERIFY_EMAIL_FRAGMENT || //go to email verify
+              _currentIndex ==
+                  AppConst.REQUEST_CODE__DASHBOARD_SEARCH_FRAGMENT ||
+              _currentIndex ==
+                  AppConst.REQUEST_CODE__DASHBOARD_BASKET_FRAGMENT ||
+              _currentIndex ==
+                  AppConst.REQUEST_CODE__DASHBOARD_LOGIN_FRAGMENT ||
+              _currentIndex ==
+                  AppConst.REQUEST_CODE__DASHBOARD_PHONE_SIGNIN_FRAGMENT ||
+              _currentIndex ==
+                  AppConst.REQUEST_CODE__DASHBOARD_PHONE_VERIFY_FRAGMENT
+          ? Visibility(
+              visible: true,
+              child: BottomNavigationBar(
+                type: BottomNavigationBarType.fixed,
+                currentIndex: getBottonNavigationIndex(_currentIndex),
+                showUnselectedLabels: true,
+                backgroundColor: AppColors.backgroundColor,
+                selectedItemColor: AppColors.mainColor,
+                elevation: 10,
+                onTap: (int index) {
+                  final dynamic _returnValue =
+                      getIndexFromBottonNavigationIndex(index);
+
+                  updateSelectedIndexWithAnimation(
+                    _returnValue[0],
+                    _returnValue[1],
+                  );
+                },
+                items: <BottomNavigationBarItem>[
+                  BottomNavigationBarItem(
+                      icon: const Icon(Icons.store, size: 20),
+                      // label: Utils.getString('dashboard__home'),
+                      label: 'Home'),
+                  BottomNavigationBarItem(
+                    icon: const Icon(Icons.person),
+                    label: 'Profile',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: const Icon(Icons.search),
+                    label: 'Search',
+                  ),
+                  BottomNavigationBarItem(
+                      icon: const Icon(Icons.shopping_cart), label: 'Basket'),
+                ],
+              ),
+            )
+          : null,
+      floatingActionButton: _currentIndex ==
+                  AppConst.REQUEST_CODE__MENU_HOME_FRAGMENT ||
+              // _currentIndex ==
+              //     AppConst.REQUEST_CODE__DASHBOARD_SHOP_INFO_FRAGMENT ||
+              _currentIndex ==
+                  AppConst.REQUEST_CODE__DASHBOARD_SELECT_WHICH_USER_FRAGMENT ||
+              _currentIndex ==
+                  AppConst.REQUEST_CODE__DASHBOARD_USER_PROFILE_FRAGMENT ||
+              _currentIndex ==
+                  AppConst.REQUEST_CODE__DASHBOARD_FORGOT_PASSWORD_FRAGMENT ||
+              _currentIndex ==
+                  AppConst.REQUEST_CODE__DASHBOARD_REGISTER_FRAGMENT ||
+              _currentIndex ==
+                  AppConst.REQUEST_CODE__DASHBOARD_VERIFY_EMAIL_FRAGMENT ||
+              _currentIndex ==
+                  AppConst.REQUEST_CODE__DASHBOARD_SEARCH_FRAGMENT ||
+              _currentIndex ==
+                  AppConst.REQUEST_CODE__DASHBOARD_BASKET_FRAGMENT ||
+              _currentIndex ==
+                  AppConst.REQUEST_CODE__DASHBOARD_LOGIN_FRAGMENT ||
+              _currentIndex ==
+                  AppConst.REQUEST_CODE__DASHBOARD_PHONE_SIGNIN_FRAGMENT ||
+              _currentIndex ==
+                  AppConst.REQUEST_CODE__DASHBOARD_PHONE_VERIFY_FRAGMENT
+          ? Container(
+              height: 65.0,
+              width: 65.0,
+              child: FittedBox(
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.0),
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                        // color: AppColors.mainColor.withValues(alpha:0.3),
+                        // color: (AppColors.mainColor as Color).withOpacity(0.3),
+                        offset: const Offset(1.1, 1.1),
+                        blurRadius: 10.0,
+                      ),
+                    ],
+                  ),
+                  child: Container(),
+                ),
+              ),
+            )
+          : null,
+      body: Builder(
+        builder: (BuildContext context) {
+          // if (_currentIndex ==
+          //     AppConst.REQUEST_CODE__DASHBOARD_SELECT_WHICH_USER_FRAGMENT) {
+          //   return ChangeNotifierProvider<UserProvider>(
           //     lazy: false,
           //     create: (BuildContext context) {
-          //       final BasketProvider provider = BasketProvider(
-          //         repo: basketRepository!,
+          //       final UserProvider provider = UserProvider(
+          //         repo: userRepository,
+          //         psValueHolder: valueHolder,
           //       );
-          //       provider.loadBasketList();
+          //       //provider.getUserLogin();
           //       return provider;
           //     },
-          //     child: Consumer<BasketProvider>(
-          //       builder:
-          //           (
-          //             BuildContext context,
-          //             BasketProvider basketProvider,
-          //             Widget? child,
-          //           ) {
-          //             return InkWell(
-          //               child: Stack(
-          //                 children: <Widget>[
-          //                   Container(
-          //                     width: AppDimens.space40,
-          //                     height: AppDimens.space40,
-          //                     margin: const EdgeInsets.only(
-          //                       top: AppDimens.space8,
-          //                       left: AppDimens.space8,
-          //                       right: AppDimens.space8,
-          //                     ),
-          //                     child: Align(
-          //                       alignment: Alignment.center,
-          //                       child: Icon(
-          //                         Icons.shopping_basket,
-          //                         color: AppColors.mainColor,
-          //                       ),
-          //                     ),
-          //                   ),
-          //                   Positioned(
-          //                     right: AppDimens.space4,
-          //                     top: AppDimens.space1,
-          //                     child: Container(
-          //                       width: AppDimens.space28,
-          //                       height: AppDimens.space28,
-          //                       decoration: BoxDecoration(
-          //                         shape: BoxShape.circle,
-          //                         color: AppColors.black!.withAlpha(200),
-          //                       ),
-          //                       child: Align(
-          //                         alignment: Alignment.center,
-          //                         child: Text(
-          //                           basketProvider.basketList.data!.length > 99
-          //                               ? '99+'
-          //                               : basketProvider.basketList.data!.length
-          //                                     .toString(),
-          //                           textAlign: TextAlign.left,
-          //                           style: Theme.of(context)
-          //                               .textTheme
-          //                               .bodyLarge!
-          //                               .copyWith(color: AppColors.white),
-          //                           maxLines: 1,
-          //                         ),
-          //                       ),
-          //                     ),
-          //                   ),
-          //                 ],
-          //               ),
-          //               onTap: () {
-          //                 Navigator.pushNamed(context, RoutePaths.basketList);
+          //     child: Consumer<UserProvider>(
+          //       builder: (
+          //         BuildContext context,
+          //         UserProvider provider,
+          //         Widget? child,
+          //       ) {
+          //         if (provider == null ||
+          //             provider.psValueHolder.userIdToVerify == null ||
+          //             provider.psValueHolder.userIdToVerify == '') {
+          //           if (provider == null ||
+          //               provider.psValueHolder == null ||
+          //               provider.psValueHolder.loginUserId == null ||
+          //               provider.psValueHolder.loginUserId == '') {
+          //             return _CallLoginWidget(
+          //               currentIndex: _currentIndex,
+          //               animationController: animationController!,
+          //               animation: animation,
+          //               updateCurrentIndex: (String title, int index) {
+          //                 if (index != null) {
+          //                   updateSelectedIndexWithAnimation(
+          //                     title,
+          //                     index,
+          //                   );
+          //                 }
+          //               },
+          //               updateUserCurrentIndex:
+          //                   (String title, int index, String userId) {
+          //                 if (index != null) {
+          //                   updateSelectedIndexWithAnimation(
+          //                     title,
+          //                     index,
+          //                   );
+          //                 }
+          //                 if (userId != null) {
+          //                   _userId = userId;
+          //                   provider.psValueHolder.loginUserId = userId;
+          //                 }
           //               },
           //             );
-          //           },
+          //           } else {
+          //             return ProfileView(
+          //               scaffoldKey: scaffoldKey,
+          //               animationController: animationController,
+          //               flag: _currentIndex,
+          //             );
+          //           }
+          //         } else {
+          //           return Container();
+          //         }
+          //         // else {
+          //         //   return _CallVerifyEmailWidget(
+          //         //       animationController: animationController,
+          //         //       animation: animation,
+          //         //       currentIndex: _currentIndex,
+          //         //       userId: _userId,
+          //         //       updateCurrentIndex: (String title, int index) {
+          //         //         updateSelectedIndexWithAnimation(title, index);
+          //         //       },
+          //         //       updateUserCurrentIndex:
+          //         //           (String title, int index, String userId) async {
+          //         //         if (userId != null) {
+          //         //           _userId = userId;
+          //         //           provider.psValueHolder.loginUserId = userId;
+          //         //         }
+          //         //         setState(() {
+          //         //           appBarTitle = title;
+          //         //           _currentIndex = index;
+          //         //         });
+          //         //       });
+          //         // }
+          //       },
           //     ),
-          //   ),
-          // ],
-        ),
-        bottomNavigationBar: _currentIndex ==
-                    AppConst.REQUEST_CODE__MENU_HOME_FRAGMENT ||
-                // _currentIndex ==
-                //     AppConst.REQUEST_CODE__DASHBOARD_SHOP_INFO_FRAGMENT ||
-                _currentIndex ==
-                    AppConst
-                        .REQUEST_CODE__DASHBOARD_SELECT_WHICH_USER_FRAGMENT ||
-                _currentIndex ==
-                    AppConst
-                        .REQUEST_CODE__DASHBOARD_USER_PROFILE_FRAGMENT || //go to profile
-                _currentIndex ==
-                    AppConst
-                        .REQUEST_CODE__DASHBOARD_FORGOT_PASSWORD_FRAGMENT || //go to forgot password
-                _currentIndex ==
-                    AppConst
-                        .REQUEST_CODE__DASHBOARD_REGISTER_FRAGMENT || //go to register
-                _currentIndex ==
-                    AppConst
-                        .REQUEST_CODE__DASHBOARD_VERIFY_EMAIL_FRAGMENT || //go to email verify
-                _currentIndex ==
-                    AppConst.REQUEST_CODE__DASHBOARD_SEARCH_FRAGMENT ||
-                _currentIndex ==
-                    AppConst.REQUEST_CODE__DASHBOARD_BASKET_FRAGMENT ||
-                _currentIndex ==
-                    AppConst.REQUEST_CODE__DASHBOARD_LOGIN_FRAGMENT ||
-                _currentIndex ==
-                    AppConst.REQUEST_CODE__DASHBOARD_PHONE_SIGNIN_FRAGMENT ||
-                _currentIndex ==
-                    AppConst.REQUEST_CODE__DASHBOARD_PHONE_VERIFY_FRAGMENT
-            ? Visibility(
-                visible: true,
-                child: BottomNavigationBar(
-                  type: BottomNavigationBarType.fixed,
-                  currentIndex: getBottonNavigationIndex(_currentIndex),
-                  showUnselectedLabels: true,
-                  backgroundColor: AppColors.backgroundColor,
-                  selectedItemColor: AppColors.mainColor,
-                  elevation: 10,
-                  onTap: (int index) {
-                    final dynamic _returnValue =
-                        getIndexFromBottonNavigationIndex(index);
+          //   );
+          // }
+          if (_currentIndex ==
+              AppConst.REQUEST_CODE__DASHBOARD_SEARCH_FRAGMENT) {
+            return Text("data");
+            // 2nd Way
+            //SearchProductProvider searchProductProvider;
 
-                    updateSelectedIndexWithAnimation(
-                      _returnValue[0],
-                      _returnValue[1],
-                    );
-                  },
-                  items: <BottomNavigationBarItem>[
-                    BottomNavigationBarItem(
-                        icon: const Icon(Icons.store, size: 20),
-                        // label: Utils.getString('dashboard__home'),
-                        label: 'Home'),
-                    BottomNavigationBarItem(
-                      icon: const Icon(Icons.person),
-                      label: 'Profile',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: const Icon(Icons.search),
-                      label: 'Search',
-                    ),
-                    BottomNavigationBarItem(
-                        icon: const Icon(Icons.shopping_cart), label: 'Basket'),
-                  ],
-                ),
-              )
-            : null,
-        floatingActionButton: _currentIndex ==
-                    AppConst.REQUEST_CODE__MENU_HOME_FRAGMENT ||
-                // _currentIndex ==
-                //     AppConst.REQUEST_CODE__DASHBOARD_SHOP_INFO_FRAGMENT ||
-                _currentIndex ==
-                    AppConst
-                        .REQUEST_CODE__DASHBOARD_SELECT_WHICH_USER_FRAGMENT ||
-                _currentIndex ==
-                    AppConst.REQUEST_CODE__DASHBOARD_USER_PROFILE_FRAGMENT ||
-                _currentIndex ==
-                    AppConst.REQUEST_CODE__DASHBOARD_FORGOT_PASSWORD_FRAGMENT ||
-                _currentIndex ==
-                    AppConst.REQUEST_CODE__DASHBOARD_REGISTER_FRAGMENT ||
-                _currentIndex ==
-                    AppConst.REQUEST_CODE__DASHBOARD_VERIFY_EMAIL_FRAGMENT ||
-                _currentIndex ==
-                    AppConst.REQUEST_CODE__DASHBOARD_SEARCH_FRAGMENT ||
-                _currentIndex ==
-                    AppConst.REQUEST_CODE__DASHBOARD_BASKET_FRAGMENT ||
-                _currentIndex ==
-                    AppConst.REQUEST_CODE__DASHBOARD_LOGIN_FRAGMENT ||
-                _currentIndex ==
-                    AppConst.REQUEST_CODE__DASHBOARD_PHONE_SIGNIN_FRAGMENT ||
-                _currentIndex ==
-                    AppConst.REQUEST_CODE__DASHBOARD_PHONE_VERIFY_FRAGMENT
-            ? Container(
-                height: 65.0,
-                width: 65.0,
-                child: FittedBox(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.0),
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                          // color: AppColors.mainColor.withValues(alpha:0.3),
-                          // color: (AppColors.mainColor as Color).withOpacity(0.3),
-                          offset: const Offset(1.1, 1.1),
-                          blurRadius: 10.0,
-                        ),
-                      ],
-                    ),
-                    child: Container(),
-                  ),
-                ),
-              )
-            : null,
-        body: Builder(
-          builder: (BuildContext context) {
-            // if (_currentIndex ==
-            //     AppConst.REQUEST_CODE__DASHBOARD_SELECT_WHICH_USER_FRAGMENT) {
+            // return CustomScrollView(
+            //   scrollDirection: Axis.vertical,
+            //   slivers: <Widget>[
+            //     HomeItemSearchView(
+            //       animationController: animationController!,
+            //       animation: animation,
+            //       productParameterHolder:
+            //           ProductParameterHolder().getLatestParameterHolder(),
+            //     ),
+            //   ],
+            // );
+            // } else if (_currentIndex ==
+            //         AppConst.REQUEST_CODE__DASHBOARD_PHONE_SIGNIN_FRAGMENT ||
+            //     _currentIndex ==
+            //         AppConst.REQUEST_CODE__MENU_PHONE_SIGNIN_FRAGMENT) {
+            //   return Stack(children: <Widget>[
+            //     Container(
+            //       color: AppColors.mainLightColorWithBlack,
+            //       width: double.infinity,
+            //       height: double.maxFinite,
+            //     ),
+            //     CustomScrollView(
+            //         scrollDirection: Axis.vertical,
+            //         slivers: <Widget>[
+            //           PhoneSignInView(
+            //               animationController: animationController,
+            //               goToLoginSelected: () {
+            //                 animationController
+            //                     .reverse()
+            //                     .then<dynamic>((void data) {
+            //                   if (!mounted) {
+            //                     return;
+            //                   }
+            //                   if (_currentIndex ==
+            //                       AppConst
+            //                           .REQUEST_CODE__MENU_PHONE_SIGNIN_FRAGMENT) {
+            //                     updateSelectedIndexWithAnimation(
+            //                         Utils.getString('home_login'),
+            //                         AppConst.REQUEST_CODE__MENU_LOGIN_FRAGMENT);
+            //                   }
+            //                   if (_currentIndex ==
+            //                       AppConst
+            //                           .REQUEST_CODE__DASHBOARD_PHONE_SIGNIN_FRAGMENT) {
+            //                     updateSelectedIndexWithAnimation(
+            //                         Utils.getString('home_login'),
+            //                         AppConst
+            //                             .REQUEST_CODE__DASHBOARD_LOGIN_FRAGMENT);
+            //                   }
+            //                 });
+            //               },
+            //               phoneSignInSelected:
+            //                   (String name, String phoneNo, String verifyId) {
+            //                 phoneUserName = name;
+            //                 phoneNumber = phoneNo;
+            //                 phoneId = verifyId;
+            //                 if (_currentIndex ==
+            //                     AppConst
+            //                         .REQUEST_CODE__MENU_PHONE_SIGNIN_FRAGMENT) {
+            //                   updateSelectedIndexWithAnimation(
+            //                       Utils.getString('home_verify_phone'),
+            //                       AppConst
+            //                           .REQUEST_CODE__MENU_PHONE_VERIFY_FRAGMENT);
+            //                 } else if (_currentIndex ==
+            //                     AppConst
+            //                         .REQUEST_CODE__DASHBOARD_PHONE_SIGNIN_FRAGMENT) {
+            //                   updateSelectedIndexWithAnimation(
+            //                       Utils.getString('home_verify_phone'),
+            //                       AppConst
+            //                           .REQUEST_CODE__DASHBOARD_PHONE_VERIFY_FRAGMENT);
+            //                 } else {
+            //                   updateSelectedIndexWithAnimation(
+            //                       Utils.getString('home_verify_phone'),
+            //                       AppConst
+            //                           .REQUEST_CODE__DASHBOARD_PHONE_VERIFY_FRAGMENT);
+            //                 }
+            //               })
+            //         ])
+            //   ]);
+            // } else if (_currentIndex ==
+            //         AppConst.REQUEST_CODE__DASHBOARD_PHONE_VERIFY_FRAGMENT ||
+            //     _currentIndex ==
+            //         AppConst.REQUEST_CODE__MENU_PHONE_VERIFY_FRAGMENT) {
+            //   return _CallVerifyPhoneWidget(
+            //       userName: phoneUserName,
+            //       phoneNumber: phoneNumber,
+            //       phoneId: phoneId,
+            //       animationController: animationController,
+            //       animation: animation,
+            //       currentIndex: _currentIndex,
+            //       updateCurrentIndex: (String title, int index) {
+            //         updateSelectedIndexWithAnimation(title, index);
+            //       },
+            //       updateUserCurrentIndex:
+            //           (String title, int index, String userId) async {
+            //         if (userId != null) {
+            //           _userId = userId;
+            //         }
+            //         setState(() {
+            //           appBarTitle = title;
+            //           _currentIndex = index;
+            //         });
+            //       });
+            // } else if (_currentIndex ==
+            //         AppConst.REQUEST_CODE__DASHBOARD_USER_PROFILE_FRAGMENT ||
+            //     _currentIndex ==
+            //         AppConst.REQUEST_CODE__MENU_USER_PROFILE_FRAGMENT) {
+            //   return ProfileView(
+            //     scaffoldKey: scaffoldKey,
+            //     animationController: animationController,
+            //     flag: _currentIndex,
+            //     userId: _userId,
+            //   );
+            // } else if (_currentIndex ==
+            //     AppConst.REQUEST_CODE__MENU_CATEGORY_FRAGMENT) {
+            //   return CategoryListView();
+            // } else if (_currentIndex ==
+            //     AppConst.REQUEST_CODE__MENU_LATEST_PRODUCT_FRAGMENT) {
+            //   return ProductListWithFilterView(
+            //     key: const Key('1'),
+            //     animationController: animationController!,
+            //     productParameterHolder:
+            //         ProductParameterHolder().getLatestParameterHolder(),
+            //   );
+            // } else if (_currentIndex ==
+            //     AppConst.REQUEST_CODE__MENU_DISCOUNT_PRODUCT_FRAGMENT) {
+            //   return ProductListWithFilterView(
+            //     key: const Key('2'),
+            //     animationController: animationController!,
+            //     productParameterHolder:
+            //         ProductParameterHolder().getDiscountParameterHolder(),
+            //   );
+            // } else if (_currentIndex ==
+            //     AppConst.REQUEST_CODE__MENU_TRENDING_PRODUCT_FRAGMENT) {
+            //   return ProductListWithFilterView(
+            //     key: const Key('3'),
+            //     animationController: animationController!,
+            //     productParameterHolder:
+            //         ProductParameterHolder().getTrendingParameterHolder(),
+            //   );
+            // } else if (_currentIndex ==
+            //     AppConst.REQUEST_CODE__MENU_FEATURED_PRODUCT_FRAGMENT) {
+            //   return ProductListWithFilterView(
+            //     key: const Key('4'),
+            //     animationController: animationController!,
+            //     productParameterHolder:
+            //         ProductParameterHolder().getFeaturedParameterHolder(),
+            //   );
+            // } else if (_currentIndex ==
+            //         AppConst.REQUEST_CODE__DASHBOARD_FORGOT_PASSWORD_FRAGMENT ||
+            //     _currentIndex ==
+            //         AppConst.REQUEST_CODE__MENU_FORGOT_PASSWORD_FRAGMENT) {
+            //   return Stack(
+            //     children: <Widget>[
+            //       Container(
+            //         color: AppColors.mainLightColorWithBlack,
+            //         width: double.infinity,
+            //         height: double.maxFinite,
+            //       ),
+            //       CustomScrollView(
+            //         scrollDirection: Axis.vertical,
+            //         slivers: <Widget>[
+            //           ForgotPasswordView(
+            //             animationController: animationController,
+            //             goToLoginSelected: () {
+            //               animationController!.reverse().then<dynamic>((
+            //                 void data,
+            //               ) {
+            //                 if (!mounted) {
+            //                   return;
+            //                 }
+            //                 if (_currentIndex ==
+            //                     AppConst
+            //                         .REQUEST_CODE__MENU_FORGOT_PASSWORD_FRAGMENT) {
+            //                   updateSelectedIndexWithAnimation(
+            //                     Utils.getString('home_login'),
+            //                     AppConst.REQUEST_CODE__MENU_LOGIN_FRAGMENT,
+            //                   );
+            //                 }
+            //                 if (_currentIndex ==
+            //                     AppConst
+            //                         .REQUEST_CODE__DASHBOARD_FORGOT_PASSWORD_FRAGMENT) {
+            //                   updateSelectedIndexWithAnimation(
+            //                     Utils.getString('home_login'),
+            //                     AppConst.REQUEST_CODE__DASHBOARD_LOGIN_FRAGMENT,
+            //                   );
+            //                 }
+            //               });
+            //             },
+            //           ),
+            //         ],
+            //       ),
+            //     ],
+            //   );
+            // } else if (_currentIndex ==
+            //         AppConst.REQUEST_CODE__DASHBOARD_REGISTER_FRAGMENT ||
+            //     _currentIndex ==
+            //         AppConst.REQUEST_CODE__MENU_REGISTER_FRAGMENT) {
+            //   return Stack(
+            //     children: <Widget>[
+            //       Container(
+            //         color: AppColors.mainLightColorWithBlack,
+            //         width: double.infinity,
+            //         height: double.maxFinite,
+            //       ),
+            //       CustomScrollView(
+            //         scrollDirection: Axis.vertical,
+            //         slivers: <Widget>[
+            //           RegisterView(
+            //             animationController: animationController,
+            //             onRegisterSelected: (User user) {
+            //               _userId = user.userId!;
+            //               // widget.provider.psValueHolder.loginUserId = userId;
+            //               if (user.status == AppConst.ONE) {
+            //                 updateSelectedIndexWithAnimationUserId(
+            //                   Utils.getString('home__menu_drawer_profile'),
+            //                   AppConst
+            //                       .REQUEST_CODE__DASHBOARD_USER_PROFILE_FRAGMENT,
+            //                   user.userId!,
+            //                 );
+            //               } else {
+            //                 if (_currentIndex ==
+            //                     AppConst.REQUEST_CODE__MENU_REGISTER_FRAGMENT) {
+            //                   updateSelectedIndexWithAnimation(
+            //                     Utils.getString('home__verify_email'),
+            //                     AppConst
+            //                         .REQUEST_CODE__MENU_VERIFY_EMAIL_FRAGMENT,
+            //                   );
+            //                 } else if (_currentIndex ==
+            //                     AppConst
+            //                         .REQUEST_CODE__DASHBOARD_REGISTER_FRAGMENT) {
+            //                   updateSelectedIndexWithAnimation(
+            //                     Utils.getString('home__verify_email'),
+            //                     AppConst
+            //                         .REQUEST_CODE__DASHBOARD_VERIFY_EMAIL_FRAGMENT,
+            //                   );
+            //                 } else {
+            //                   updateSelectedIndexWithAnimationUserId(
+            //                     Utils.getString('home__menu_drawer_profile'),
+            //                     AppConst
+            //                         .REQUEST_CODE__DASHBOARD_USER_PROFILE_FRAGMENT,
+            //                     user.userId!,
+            //                   );
+            //                 }
+            //               }
+            //             },
+            //             goToLoginSelected: () {
+            //               animationController!.reverse().then<dynamic>((
+            //                 void data,
+            //               ) {
+            //                 if (!mounted) {
+            //                   return;
+            //                 }
+            //                 if (_currentIndex ==
+            //                     AppConst.REQUEST_CODE__MENU_REGISTER_FRAGMENT) {
+            //                   updateSelectedIndexWithAnimation(
+            //                     Utils.getString('home_login'),
+            //                     AppConst.REQUEST_CODE__MENU_LOGIN_FRAGMENT,
+            //                   );
+            //                 }
+            //                 if (_currentIndex ==
+            //                     AppConst
+            //                         .REQUEST_CODE__DASHBOARD_REGISTER_FRAGMENT) {
+            //                   updateSelectedIndexWithAnimation(
+            //                     Utils.getString('home_login'),
+            //                     AppConst.REQUEST_CODE__DASHBOARD_LOGIN_FRAGMENT,
+            //                   );
+            //                 }
+            //               });
+            //             },
+            //           ),
+            //         ],
+            //       ),
+            //     ],
+            //   );
+            //   // } else if (_currentIndex ==
+            //   //         AppConst.REQUEST_CODE__DASHBOARD_VERIFY_EMAIL_FRAGMENT ||
+            //   //     _currentIndex ==
+            //   //         AppConst.REQUEST_CODE__MENU_VERIFY_EMAIL_FRAGMENT) {
+            //   //   return _CallVerifyEmailWidget(
+            //   //       animationController: animationController,
+            //   //       animation: animation,
+            //   //       currentIndex: _currentIndex,
+            //   //       userId: _userId,
+            //   //       updateCurrentIndex: (String title, int index) {
+            //   //         updateSelectedIndexWithAnimation(title, index);
+            //   //       },
+            //   //       updateUserCurrentIndex:
+            //   //           (String title, int index, String userId) async {
+            //   //         if (userId != null) {
+            //   //           _userId = userId;
+            //   //         }
+            //   //         setState(() {
+            //   //           appBarTitle = title;
+            //   //           _currentIndex = index;
+            //   //         });
+            //   //       });
+            // } else if (_currentIndex ==
+            //         AppConst.REQUEST_CODE__DASHBOARD_LOGIN_FRAGMENT ||
+            //     _currentIndex == AppConst.REQUEST_CODE__MENU_LOGIN_FRAGMENT) {
+            //   return _CallLoginWidget(
+            //     currentIndex: _currentIndex,
+            //     animationController: animationController!,
+            //     animation: animation,
+            //     updateCurrentIndex: (String title, int index) {
+            //       updateSelectedIndexWithAnimation(title, index);
+            //     },
+            //     updateUserCurrentIndex:
+            //         (String title, int index, String userId) {
+            //       setState(() {
+            //         if (index != null) {
+            //           appBarTitle = title;
+            //           _currentIndex = index;
+            //         }
+            //       });
+            //       if (userId != null) {
+            //         _userId = userId;
+            //       }
+            //     },
+            //   );
+            // } else if (_currentIndex ==
+            //     AppConst.REQUEST_CODE__MENU_SELECT_WHICH_USER_FRAGMENT) {
             //   return ChangeNotifierProvider<UserProvider>(
             //     lazy: false,
             //     create: (BuildContext context) {
@@ -833,15 +1238,12 @@ class _HomeViewState extends State<DashboardView>
             //         repo: userRepository,
             //         psValueHolder: valueHolder,
             //       );
-            //       //provider.getUserLogin();
+
             //       return provider;
             //     },
             //     child: Consumer<UserProvider>(
-            //       builder: (
-            //         BuildContext context,
-            //         UserProvider provider,
-            //         Widget? child,
-            //       ) {
+            //       builder: (BuildContext context, UserProvider provider,
+            //           Widget? child) {
             //         if (provider == null ||
             //             provider.psValueHolder.userIdToVerify == null ||
             //             provider.psValueHolder.userIdToVerify == '') {
@@ -849,31 +1251,106 @@ class _HomeViewState extends State<DashboardView>
             //               provider.psValueHolder == null ||
             //               provider.psValueHolder.loginUserId == null ||
             //               provider.psValueHolder.loginUserId == '') {
-            //             return _CallLoginWidget(
-            //               currentIndex: _currentIndex,
-            //               animationController: animationController!,
-            //               animation: animation,
-            //               updateCurrentIndex: (String title, int index) {
-            //                 if (index != null) {
-            //                   updateSelectedIndexWithAnimation(
-            //                     title,
-            //                     index,
-            //                   );
-            //                 }
-            //               },
-            //               updateUserCurrentIndex:
-            //                   (String title, int index, String userId) {
-            //                 if (index != null) {
-            //                   updateSelectedIndexWithAnimation(
-            //                     title,
-            //                     index,
-            //                   );
-            //                 }
-            //                 if (userId != null) {
-            //                   _userId = userId;
-            //                   provider.psValueHolder.loginUserId = userId;
-            //                 }
-            //               },
+            //             return Stack(
+            //               children: <Widget>[
+            //                 Container(
+            //                   color: AppColors.mainLightColorWithBlack,
+            //                   width: double.infinity,
+            //                   height: double.maxFinite,
+            //                 ),
+            //                 CustomScrollView(
+            //                   scrollDirection: Axis.vertical,
+            //                   slivers: <Widget>[
+            //                     Text('data')
+            //                     // LoginView(
+            //                     //   animationController: animationController,
+            //                     //   animation: animation,
+            //                     //   onGoogleSignInSelected: (String userId) {
+            //                     //     setState(() {
+            //                     //       _currentIndex = AppConst
+            //                     //           .REQUEST_CODE__MENU_USER_PROFILE_FRAGMENT;
+            //                     //     });
+            //                     //     _userId = userId;
+            //                     //     provider.psValueHolder.loginUserId = userId;
+            //                     //   },
+            //                     //   onFbSignInSelected: (String userId) {
+            //                     //     setState(() {
+            //                     //       _currentIndex = AppConst
+            //                     //           .REQUEST_CODE__MENU_USER_PROFILE_FRAGMENT;
+            //                     //     });
+            //                     //     _userId = userId;
+            //                     //     provider.psValueHolder.loginUserId = userId;
+            //                     //   },
+            //                     //   onPhoneSignInSelected: () {
+            //                     //     if (_currentIndex ==
+            //                     //         AppConst
+            //                     //             .REQUEST_CODE__MENU_PHONE_SIGNIN_FRAGMENT) {
+            //                     //       updateSelectedIndexWithAnimation(
+            //                     //         Utils.getString('home_phone_signin'),
+            //                     //         AppConst
+            //                     //             .REQUEST_CODE__MENU_PHONE_SIGNIN_FRAGMENT,
+            //                     //       );
+            //                     //     } else if (_currentIndex ==
+            //                     //         AppConst
+            //                     //             .REQUEST_CODE__DASHBOARD_PHONE_SIGNIN_FRAGMENT) {
+            //                     //       updateSelectedIndexWithAnimation(
+            //                     //         Utils.getString('home_phone_signin'),
+            //                     //         AppConst
+            //                     //             .REQUEST_CODE__DASHBOARD_PHONE_SIGNIN_FRAGMENT,
+            //                     //       );
+            //                     //     } else if (_currentIndex ==
+            //                     //         AppConst
+            //                     //             .REQUEST_CODE__MENU_SELECT_WHICH_USER_FRAGMENT) {
+            //                     //       updateSelectedIndexWithAnimation(
+            //                     //         Utils.getString('home_phone_signin'),
+            //                     //         AppConst
+            //                     //             .REQUEST_CODE__MENU_PHONE_SIGNIN_FRAGMENT,
+            //                     //       );
+            //                     //     } else if (_currentIndex ==
+            //                     //         AppConst
+            //                     //             .REQUEST_CODE__DASHBOARD_SELECT_WHICH_USER_FRAGMENT) {
+            //                     //       updateSelectedIndexWithAnimation(
+            //                     //         Utils.getString('home_phone_signin'),
+            //                     //         AppConst
+            //                     //             .REQUEST_CODE__DASHBOARD_PHONE_SIGNIN_FRAGMENT,
+            //                     //       );
+            //                     //     } else {
+            //                     //       updateSelectedIndexWithAnimation(
+            //                     //         Utils.getString('home_phone_signin'),
+            //                     //         AppConst
+            //                     //             .REQUEST_CODE__DASHBOARD_PHONE_SIGNIN_FRAGMENT,
+            //                     //       );
+            //                     //     }
+            //                     //   },
+            //                     //   onProfileSelected: (String userId) {
+            //                     //     setState(() {
+            //                     //       _currentIndex = AppConst
+            //                     //           .REQUEST_CODE__MENU_USER_PROFILE_FRAGMENT;
+            //                     //       _userId = userId;
+            //                     //       provider.psValueHolder.loginUserId =
+            //                     //           userId;
+            //                     //     });
+            //                     //   },
+            //                     //   onForgotPasswordSelected: () {
+            //                     //     setState(() {
+            //                     //       _currentIndex = AppConst
+            //                     //           .REQUEST_CODE__MENU_FORGOT_PASSWORD_FRAGMENT;
+            //                     //       appBarTitle = Utils.getString(
+            //                     //         'home__forgot_password',
+            //                     //       );
+            //                     //     });
+            //                     //   },
+            //                     //   onSignInSelected: () {
+            //                     //     updateSelectedIndexWithAnimation(
+            //                     //       Utils.getString('home__register'),
+            //                     //       AppConst
+            //                     //           .REQUEST_CODE__MENU_REGISTER_FRAGMENT,
+            //                     //     );
+            //                     //   },
+            //                     // ),
+            //                   ],
+            //                 ),
+            //               ],
             //             );
             //           } else {
             //             return ProfileView(
@@ -884,558 +1361,74 @@ class _HomeViewState extends State<DashboardView>
             //           }
             //         } else {
             //           return Container();
+            //           // return _CallVerifyEmailWidget(
+            //           //     animationController: animationController,
+            //           //     animation: animation,
+            //           //     currentIndex: _currentIndex,
+            //           //     userId: _userId,
+            //           //     updateCurrentIndex: (String title, int index) {
+            //           //       updateSelectedIndexWithAnimation(title, index);
+            //           //     },
+            //           //     updateUserCurrentIndex:
+            //           //         (String title, int index, String userId) async {
+            //           //       if (userId != null) {
+            //           //         _userId = userId;
+            //           //         provider.psValueHolder.loginUserId = userId;
+            //           //       }
+            //           //       setState(() {
+            //           //         appBarTitle = title;
+            //           //         _currentIndex = index;
+            //           //       });
+            //           //     });
             //         }
-            //         // else {
-            //         //   return _CallVerifyEmailWidget(
-            //         //       animationController: animationController,
-            //         //       animation: animation,
-            //         //       currentIndex: _currentIndex,
-            //         //       userId: _userId,
-            //         //       updateCurrentIndex: (String title, int index) {
-            //         //         updateSelectedIndexWithAnimation(title, index);
-            //         //       },
-            //         //       updateUserCurrentIndex:
-            //         //           (String title, int index, String userId) async {
-            //         //         if (userId != null) {
-            //         //           _userId = userId;
-            //         //           provider.psValueHolder.loginUserId = userId;
-            //         //         }
-            //         //         setState(() {
-            //         //           appBarTitle = title;
-            //         //           _currentIndex = index;
-            //         //         });
-            //         //       });
-            //         // }
             //       },
             //     ),
             //   );
-            // }
-            if (_currentIndex ==
-                AppConst.REQUEST_CODE__DASHBOARD_SEARCH_FRAGMENT) {
-              return Text("data");
-              // 2nd Way
-              //SearchProductProvider searchProductProvider;
-
-              // return CustomScrollView(
-              //   scrollDirection: Axis.vertical,
-              //   slivers: <Widget>[
-              //     HomeItemSearchView(
-              //       animationController: animationController!,
-              //       animation: animation,
-              //       productParameterHolder:
-              //           ProductParameterHolder().getLatestParameterHolder(),
-              //     ),
-              //   ],
-              // );
-              // } else if (_currentIndex ==
-              //         AppConst.REQUEST_CODE__DASHBOARD_PHONE_SIGNIN_FRAGMENT ||
-              //     _currentIndex ==
-              //         AppConst.REQUEST_CODE__MENU_PHONE_SIGNIN_FRAGMENT) {
-              //   return Stack(children: <Widget>[
-              //     Container(
-              //       color: AppColors.mainLightColorWithBlack,
-              //       width: double.infinity,
-              //       height: double.maxFinite,
-              //     ),
-              //     CustomScrollView(
-              //         scrollDirection: Axis.vertical,
-              //         slivers: <Widget>[
-              //           PhoneSignInView(
-              //               animationController: animationController,
-              //               goToLoginSelected: () {
-              //                 animationController
-              //                     .reverse()
-              //                     .then<dynamic>((void data) {
-              //                   if (!mounted) {
-              //                     return;
-              //                   }
-              //                   if (_currentIndex ==
-              //                       AppConst
-              //                           .REQUEST_CODE__MENU_PHONE_SIGNIN_FRAGMENT) {
-              //                     updateSelectedIndexWithAnimation(
-              //                         Utils.getString('home_login'),
-              //                         AppConst.REQUEST_CODE__MENU_LOGIN_FRAGMENT);
-              //                   }
-              //                   if (_currentIndex ==
-              //                       AppConst
-              //                           .REQUEST_CODE__DASHBOARD_PHONE_SIGNIN_FRAGMENT) {
-              //                     updateSelectedIndexWithAnimation(
-              //                         Utils.getString('home_login'),
-              //                         AppConst
-              //                             .REQUEST_CODE__DASHBOARD_LOGIN_FRAGMENT);
-              //                   }
-              //                 });
-              //               },
-              //               phoneSignInSelected:
-              //                   (String name, String phoneNo, String verifyId) {
-              //                 phoneUserName = name;
-              //                 phoneNumber = phoneNo;
-              //                 phoneId = verifyId;
-              //                 if (_currentIndex ==
-              //                     AppConst
-              //                         .REQUEST_CODE__MENU_PHONE_SIGNIN_FRAGMENT) {
-              //                   updateSelectedIndexWithAnimation(
-              //                       Utils.getString('home_verify_phone'),
-              //                       AppConst
-              //                           .REQUEST_CODE__MENU_PHONE_VERIFY_FRAGMENT);
-              //                 } else if (_currentIndex ==
-              //                     AppConst
-              //                         .REQUEST_CODE__DASHBOARD_PHONE_SIGNIN_FRAGMENT) {
-              //                   updateSelectedIndexWithAnimation(
-              //                       Utils.getString('home_verify_phone'),
-              //                       AppConst
-              //                           .REQUEST_CODE__DASHBOARD_PHONE_VERIFY_FRAGMENT);
-              //                 } else {
-              //                   updateSelectedIndexWithAnimation(
-              //                       Utils.getString('home_verify_phone'),
-              //                       AppConst
-              //                           .REQUEST_CODE__DASHBOARD_PHONE_VERIFY_FRAGMENT);
-              //                 }
-              //               })
-              //         ])
-              //   ]);
-              // } else if (_currentIndex ==
-              //         AppConst.REQUEST_CODE__DASHBOARD_PHONE_VERIFY_FRAGMENT ||
-              //     _currentIndex ==
-              //         AppConst.REQUEST_CODE__MENU_PHONE_VERIFY_FRAGMENT) {
-              //   return _CallVerifyPhoneWidget(
-              //       userName: phoneUserName,
-              //       phoneNumber: phoneNumber,
-              //       phoneId: phoneId,
-              //       animationController: animationController,
-              //       animation: animation,
-              //       currentIndex: _currentIndex,
-              //       updateCurrentIndex: (String title, int index) {
-              //         updateSelectedIndexWithAnimation(title, index);
-              //       },
-              //       updateUserCurrentIndex:
-              //           (String title, int index, String userId) async {
-              //         if (userId != null) {
-              //           _userId = userId;
-              //         }
-              //         setState(() {
-              //           appBarTitle = title;
-              //           _currentIndex = index;
-              //         });
-              //       });
-              // } else if (_currentIndex ==
-              //         AppConst.REQUEST_CODE__DASHBOARD_USER_PROFILE_FRAGMENT ||
-              //     _currentIndex ==
-              //         AppConst.REQUEST_CODE__MENU_USER_PROFILE_FRAGMENT) {
-              //   return ProfileView(
-              //     scaffoldKey: scaffoldKey,
-              //     animationController: animationController,
-              //     flag: _currentIndex,
-              //     userId: _userId,
-              //   );
-              // } else if (_currentIndex ==
-              //     AppConst.REQUEST_CODE__MENU_CATEGORY_FRAGMENT) {
-              //   return CategoryListView();
-              // } else if (_currentIndex ==
-              //     AppConst.REQUEST_CODE__MENU_LATEST_PRODUCT_FRAGMENT) {
-              //   return ProductListWithFilterView(
-              //     key: const Key('1'),
-              //     animationController: animationController!,
-              //     productParameterHolder:
-              //         ProductParameterHolder().getLatestParameterHolder(),
-              //   );
-              // } else if (_currentIndex ==
-              //     AppConst.REQUEST_CODE__MENU_DISCOUNT_PRODUCT_FRAGMENT) {
-              //   return ProductListWithFilterView(
-              //     key: const Key('2'),
-              //     animationController: animationController!,
-              //     productParameterHolder:
-              //         ProductParameterHolder().getDiscountParameterHolder(),
-              //   );
-              // } else if (_currentIndex ==
-              //     AppConst.REQUEST_CODE__MENU_TRENDING_PRODUCT_FRAGMENT) {
-              //   return ProductListWithFilterView(
-              //     key: const Key('3'),
-              //     animationController: animationController!,
-              //     productParameterHolder:
-              //         ProductParameterHolder().getTrendingParameterHolder(),
-              //   );
-              // } else if (_currentIndex ==
-              //     AppConst.REQUEST_CODE__MENU_FEATURED_PRODUCT_FRAGMENT) {
-              //   return ProductListWithFilterView(
-              //     key: const Key('4'),
-              //     animationController: animationController!,
-              //     productParameterHolder:
-              //         ProductParameterHolder().getFeaturedParameterHolder(),
-              //   );
-              // } else if (_currentIndex ==
-              //         AppConst.REQUEST_CODE__DASHBOARD_FORGOT_PASSWORD_FRAGMENT ||
-              //     _currentIndex ==
-              //         AppConst.REQUEST_CODE__MENU_FORGOT_PASSWORD_FRAGMENT) {
-              //   return Stack(
-              //     children: <Widget>[
-              //       Container(
-              //         color: AppColors.mainLightColorWithBlack,
-              //         width: double.infinity,
-              //         height: double.maxFinite,
-              //       ),
-              //       CustomScrollView(
-              //         scrollDirection: Axis.vertical,
-              //         slivers: <Widget>[
-              //           ForgotPasswordView(
-              //             animationController: animationController,
-              //             goToLoginSelected: () {
-              //               animationController!.reverse().then<dynamic>((
-              //                 void data,
-              //               ) {
-              //                 if (!mounted) {
-              //                   return;
-              //                 }
-              //                 if (_currentIndex ==
-              //                     AppConst
-              //                         .REQUEST_CODE__MENU_FORGOT_PASSWORD_FRAGMENT) {
-              //                   updateSelectedIndexWithAnimation(
-              //                     Utils.getString('home_login'),
-              //                     AppConst.REQUEST_CODE__MENU_LOGIN_FRAGMENT,
-              //                   );
-              //                 }
-              //                 if (_currentIndex ==
-              //                     AppConst
-              //                         .REQUEST_CODE__DASHBOARD_FORGOT_PASSWORD_FRAGMENT) {
-              //                   updateSelectedIndexWithAnimation(
-              //                     Utils.getString('home_login'),
-              //                     AppConst.REQUEST_CODE__DASHBOARD_LOGIN_FRAGMENT,
-              //                   );
-              //                 }
-              //               });
-              //             },
-              //           ),
-              //         ],
-              //       ),
-              //     ],
-              //   );
-              // } else if (_currentIndex ==
-              //         AppConst.REQUEST_CODE__DASHBOARD_REGISTER_FRAGMENT ||
-              //     _currentIndex ==
-              //         AppConst.REQUEST_CODE__MENU_REGISTER_FRAGMENT) {
-              //   return Stack(
-              //     children: <Widget>[
-              //       Container(
-              //         color: AppColors.mainLightColorWithBlack,
-              //         width: double.infinity,
-              //         height: double.maxFinite,
-              //       ),
-              //       CustomScrollView(
-              //         scrollDirection: Axis.vertical,
-              //         slivers: <Widget>[
-              //           RegisterView(
-              //             animationController: animationController,
-              //             onRegisterSelected: (User user) {
-              //               _userId = user.userId!;
-              //               // widget.provider.psValueHolder.loginUserId = userId;
-              //               if (user.status == AppConst.ONE) {
-              //                 updateSelectedIndexWithAnimationUserId(
-              //                   Utils.getString('home__menu_drawer_profile'),
-              //                   AppConst
-              //                       .REQUEST_CODE__DASHBOARD_USER_PROFILE_FRAGMENT,
-              //                   user.userId!,
-              //                 );
-              //               } else {
-              //                 if (_currentIndex ==
-              //                     AppConst.REQUEST_CODE__MENU_REGISTER_FRAGMENT) {
-              //                   updateSelectedIndexWithAnimation(
-              //                     Utils.getString('home__verify_email'),
-              //                     AppConst
-              //                         .REQUEST_CODE__MENU_VERIFY_EMAIL_FRAGMENT,
-              //                   );
-              //                 } else if (_currentIndex ==
-              //                     AppConst
-              //                         .REQUEST_CODE__DASHBOARD_REGISTER_FRAGMENT) {
-              //                   updateSelectedIndexWithAnimation(
-              //                     Utils.getString('home__verify_email'),
-              //                     AppConst
-              //                         .REQUEST_CODE__DASHBOARD_VERIFY_EMAIL_FRAGMENT,
-              //                   );
-              //                 } else {
-              //                   updateSelectedIndexWithAnimationUserId(
-              //                     Utils.getString('home__menu_drawer_profile'),
-              //                     AppConst
-              //                         .REQUEST_CODE__DASHBOARD_USER_PROFILE_FRAGMENT,
-              //                     user.userId!,
-              //                   );
-              //                 }
-              //               }
-              //             },
-              //             goToLoginSelected: () {
-              //               animationController!.reverse().then<dynamic>((
-              //                 void data,
-              //               ) {
-              //                 if (!mounted) {
-              //                   return;
-              //                 }
-              //                 if (_currentIndex ==
-              //                     AppConst.REQUEST_CODE__MENU_REGISTER_FRAGMENT) {
-              //                   updateSelectedIndexWithAnimation(
-              //                     Utils.getString('home_login'),
-              //                     AppConst.REQUEST_CODE__MENU_LOGIN_FRAGMENT,
-              //                   );
-              //                 }
-              //                 if (_currentIndex ==
-              //                     AppConst
-              //                         .REQUEST_CODE__DASHBOARD_REGISTER_FRAGMENT) {
-              //                   updateSelectedIndexWithAnimation(
-              //                     Utils.getString('home_login'),
-              //                     AppConst.REQUEST_CODE__DASHBOARD_LOGIN_FRAGMENT,
-              //                   );
-              //                 }
-              //               });
-              //             },
-              //           ),
-              //         ],
-              //       ),
-              //     ],
-              //   );
-              //   // } else if (_currentIndex ==
-              //   //         AppConst.REQUEST_CODE__DASHBOARD_VERIFY_EMAIL_FRAGMENT ||
-              //   //     _currentIndex ==
-              //   //         AppConst.REQUEST_CODE__MENU_VERIFY_EMAIL_FRAGMENT) {
-              //   //   return _CallVerifyEmailWidget(
-              //   //       animationController: animationController,
-              //   //       animation: animation,
-              //   //       currentIndex: _currentIndex,
-              //   //       userId: _userId,
-              //   //       updateCurrentIndex: (String title, int index) {
-              //   //         updateSelectedIndexWithAnimation(title, index);
-              //   //       },
-              //   //       updateUserCurrentIndex:
-              //   //           (String title, int index, String userId) async {
-              //   //         if (userId != null) {
-              //   //           _userId = userId;
-              //   //         }
-              //   //         setState(() {
-              //   //           appBarTitle = title;
-              //   //           _currentIndex = index;
-              //   //         });
-              //   //       });
-              // } else if (_currentIndex ==
-              //         AppConst.REQUEST_CODE__DASHBOARD_LOGIN_FRAGMENT ||
-              //     _currentIndex == AppConst.REQUEST_CODE__MENU_LOGIN_FRAGMENT) {
-              //   return _CallLoginWidget(
-              //     currentIndex: _currentIndex,
-              //     animationController: animationController!,
-              //     animation: animation,
-              //     updateCurrentIndex: (String title, int index) {
-              //       updateSelectedIndexWithAnimation(title, index);
-              //     },
-              //     updateUserCurrentIndex:
-              //         (String title, int index, String userId) {
-              //       setState(() {
-              //         if (index != null) {
-              //           appBarTitle = title;
-              //           _currentIndex = index;
-              //         }
-              //       });
-              //       if (userId != null) {
-              //         _userId = userId;
-              //       }
-              //     },
-              //   );
-              // } else if (_currentIndex ==
-              //     AppConst.REQUEST_CODE__MENU_SELECT_WHICH_USER_FRAGMENT) {
-              //   return ChangeNotifierProvider<UserProvider>(
-              //     lazy: false,
-              //     create: (BuildContext context) {
-              //       final UserProvider provider = UserProvider(
-              //         repo: userRepository,
-              //         psValueHolder: valueHolder,
-              //       );
-
-              //       return provider;
-              //     },
-              //     child: Consumer<UserProvider>(
-              //       builder: (BuildContext context, UserProvider provider,
-              //           Widget? child) {
-              //         if (provider == null ||
-              //             provider.psValueHolder.userIdToVerify == null ||
-              //             provider.psValueHolder.userIdToVerify == '') {
-              //           if (provider == null ||
-              //               provider.psValueHolder == null ||
-              //               provider.psValueHolder.loginUserId == null ||
-              //               provider.psValueHolder.loginUserId == '') {
-              //             return Stack(
-              //               children: <Widget>[
-              //                 Container(
-              //                   color: AppColors.mainLightColorWithBlack,
-              //                   width: double.infinity,
-              //                   height: double.maxFinite,
-              //                 ),
-              //                 CustomScrollView(
-              //                   scrollDirection: Axis.vertical,
-              //                   slivers: <Widget>[
-              //                     Text('data')
-              //                     // LoginView(
-              //                     //   animationController: animationController,
-              //                     //   animation: animation,
-              //                     //   onGoogleSignInSelected: (String userId) {
-              //                     //     setState(() {
-              //                     //       _currentIndex = AppConst
-              //                     //           .REQUEST_CODE__MENU_USER_PROFILE_FRAGMENT;
-              //                     //     });
-              //                     //     _userId = userId;
-              //                     //     provider.psValueHolder.loginUserId = userId;
-              //                     //   },
-              //                     //   onFbSignInSelected: (String userId) {
-              //                     //     setState(() {
-              //                     //       _currentIndex = AppConst
-              //                     //           .REQUEST_CODE__MENU_USER_PROFILE_FRAGMENT;
-              //                     //     });
-              //                     //     _userId = userId;
-              //                     //     provider.psValueHolder.loginUserId = userId;
-              //                     //   },
-              //                     //   onPhoneSignInSelected: () {
-              //                     //     if (_currentIndex ==
-              //                     //         AppConst
-              //                     //             .REQUEST_CODE__MENU_PHONE_SIGNIN_FRAGMENT) {
-              //                     //       updateSelectedIndexWithAnimation(
-              //                     //         Utils.getString('home_phone_signin'),
-              //                     //         AppConst
-              //                     //             .REQUEST_CODE__MENU_PHONE_SIGNIN_FRAGMENT,
-              //                     //       );
-              //                     //     } else if (_currentIndex ==
-              //                     //         AppConst
-              //                     //             .REQUEST_CODE__DASHBOARD_PHONE_SIGNIN_FRAGMENT) {
-              //                     //       updateSelectedIndexWithAnimation(
-              //                     //         Utils.getString('home_phone_signin'),
-              //                     //         AppConst
-              //                     //             .REQUEST_CODE__DASHBOARD_PHONE_SIGNIN_FRAGMENT,
-              //                     //       );
-              //                     //     } else if (_currentIndex ==
-              //                     //         AppConst
-              //                     //             .REQUEST_CODE__MENU_SELECT_WHICH_USER_FRAGMENT) {
-              //                     //       updateSelectedIndexWithAnimation(
-              //                     //         Utils.getString('home_phone_signin'),
-              //                     //         AppConst
-              //                     //             .REQUEST_CODE__MENU_PHONE_SIGNIN_FRAGMENT,
-              //                     //       );
-              //                     //     } else if (_currentIndex ==
-              //                     //         AppConst
-              //                     //             .REQUEST_CODE__DASHBOARD_SELECT_WHICH_USER_FRAGMENT) {
-              //                     //       updateSelectedIndexWithAnimation(
-              //                     //         Utils.getString('home_phone_signin'),
-              //                     //         AppConst
-              //                     //             .REQUEST_CODE__DASHBOARD_PHONE_SIGNIN_FRAGMENT,
-              //                     //       );
-              //                     //     } else {
-              //                     //       updateSelectedIndexWithAnimation(
-              //                     //         Utils.getString('home_phone_signin'),
-              //                     //         AppConst
-              //                     //             .REQUEST_CODE__DASHBOARD_PHONE_SIGNIN_FRAGMENT,
-              //                     //       );
-              //                     //     }
-              //                     //   },
-              //                     //   onProfileSelected: (String userId) {
-              //                     //     setState(() {
-              //                     //       _currentIndex = AppConst
-              //                     //           .REQUEST_CODE__MENU_USER_PROFILE_FRAGMENT;
-              //                     //       _userId = userId;
-              //                     //       provider.psValueHolder.loginUserId =
-              //                     //           userId;
-              //                     //     });
-              //                     //   },
-              //                     //   onForgotPasswordSelected: () {
-              //                     //     setState(() {
-              //                     //       _currentIndex = AppConst
-              //                     //           .REQUEST_CODE__MENU_FORGOT_PASSWORD_FRAGMENT;
-              //                     //       appBarTitle = Utils.getString(
-              //                     //         'home__forgot_password',
-              //                     //       );
-              //                     //     });
-              //                     //   },
-              //                     //   onSignInSelected: () {
-              //                     //     updateSelectedIndexWithAnimation(
-              //                     //       Utils.getString('home__register'),
-              //                     //       AppConst
-              //                     //           .REQUEST_CODE__MENU_REGISTER_FRAGMENT,
-              //                     //     );
-              //                     //   },
-              //                     // ),
-              //                   ],
-              //                 ),
-              //               ],
-              //             );
-              //           } else {
-              //             return ProfileView(
-              //               scaffoldKey: scaffoldKey,
-              //               animationController: animationController,
-              //               flag: _currentIndex,
-              //             );
-              //           }
-              //         } else {
-              //           return Container();
-              //           // return _CallVerifyEmailWidget(
-              //           //     animationController: animationController,
-              //           //     animation: animation,
-              //           //     currentIndex: _currentIndex,
-              //           //     userId: _userId,
-              //           //     updateCurrentIndex: (String title, int index) {
-              //           //       updateSelectedIndexWithAnimation(title, index);
-              //           //     },
-              //           //     updateUserCurrentIndex:
-              //           //         (String title, int index, String userId) async {
-              //           //       if (userId != null) {
-              //           //         _userId = userId;
-              //           //         provider.psValueHolder.loginUserId = userId;
-              //           //       }
-              //           //       setState(() {
-              //           //         appBarTitle = title;
-              //           //         _currentIndex = index;
-              //           //       });
-              //           //     });
-              //         }
-              //       },
-              //     ),
-              //   );
-              //   // } else if (_currentIndex ==
-              //   //     AppConst.REQUEST_CODE__MENU_FAVOURITE_FRAGMENT) {
-              //   //   return HistoryListView(animationController: animationController)(
-              //   //       animationController: animationController);
-              // } else if (_currentIndex ==
-              //     AppConst.REQUEST_CODE__MENU_TRANSACTION_FRAGMENT) {
-              //   return TransactionListView(
-              //     scaffoldKey: scaffoldKey,
-              //     animationController: animationController!,
-              //   );
-              // } else if (_currentIndex ==
-              //     AppConst.REQUEST_CODE__MENU_FAVOURITE_FRAGMENT) {
-              //   return HistoryListView(animationController: animationController!);
-              //   // } else if (_currentIndex ==
-              //   //     AppConst.REQUEST_CODE__MENU_FAVOURITE_FRAGMENT) {
-              //   //   return CollectionHeaderListView(
-              //   //       animationController: animationController);
-              // } else if (_currentIndex ==
-              //     AppConst.REQUEST_CODE__MENU_LANGUAGE_FRAGMENT) {
-              //   return LanguageView();
-              // } else if (_currentIndex ==
-              //     AppConst.REQUEST_CODE__MENU_CONTACT_US_FRAGMENT) {
-              //   return ContactUsView(animationController: animationController!);
-              // } else if (_currentIndex ==
-              //     AppConst.REQUEST_CODE__MENU_SETTING_FRAGMENT) {
-              //   return Container(
-              //     color: AppColors.coreBackgroundColor,
-              //     height: double.infinity,
-              //     child: SettingView(animationController: animationController!),
-              //   );
-              //   // } else if (_currentIndex ==
-              //   //     AppConst.REQUEST_CODE__MENU_TERMS_AND_CONDITION_FRAGMENT) {
-              //   //   return PrivacyPolicyView(
-              //   //     animationController: animationController,
-              //   //   );
-              //   // } else if (_currentIndex ==
-              //   //     AppConst.REQUEST_CODE__DASHBOARD_BASKET_FRAGMENT) {
-              //   //   return BasketListView(
-              //   //     animationController: animationController,
-              //   //   );
-            } else {
-              animationController!.forward();
-              return HomeDashboardView(animationController!, context);
-            }
-          },
-        ),
+            //   // } else if (_currentIndex ==
+            //   //     AppConst.REQUEST_CODE__MENU_FAVOURITE_FRAGMENT) {
+            //   //   return HistoryListView(animationController: animationController)(
+            //   //       animationController: animationController);
+            // } else if (_currentIndex ==
+            //     AppConst.REQUEST_CODE__MENU_TRANSACTION_FRAGMENT) {
+            //   return TransactionListView(
+            //     scaffoldKey: scaffoldKey,
+            //     animationController: animationController!,
+            //   );
+            // } else if (_currentIndex ==
+            //     AppConst.REQUEST_CODE__MENU_FAVOURITE_FRAGMENT) {
+            //   return HistoryListView(animationController: animationController!);
+            //   // } else if (_currentIndex ==
+            //   //     AppConst.REQUEST_CODE__MENU_FAVOURITE_FRAGMENT) {
+            //   //   return CollectionHeaderListView(
+            //   //       animationController: animationController);
+            // } else if (_currentIndex ==
+            //     AppConst.REQUEST_CODE__MENU_LANGUAGE_FRAGMENT) {
+            //   return LanguageView();
+            // } else if (_currentIndex ==
+            //     AppConst.REQUEST_CODE__MENU_CONTACT_US_FRAGMENT) {
+            //   return ContactUsView(animationController: animationController!);
+            // } else if (_currentIndex ==
+            //     AppConst.REQUEST_CODE__MENU_SETTING_FRAGMENT) {
+            //   return Container(
+            //     color: AppColors.coreBackgroundColor,
+            //     height: double.infinity,
+            //     child: SettingView(animationController: animationController!),
+            //   );
+            //   // } else if (_currentIndex ==
+            //   //     AppConst.REQUEST_CODE__MENU_TERMS_AND_CONDITION_FRAGMENT) {
+            //   //   return PrivacyPolicyView(
+            //   //     animationController: animationController,
+            //   //   );
+            //   // } else if (_currentIndex ==
+            //   //     AppConst.REQUEST_CODE__DASHBOARD_BASKET_FRAGMENT) {
+            //   //   return BasketListView(
+            //   //     animationController: animationController,
+            //   //   );
+          } else {
+            animationController!.forward();
+            return HomeDashboardView(animationController!, context);
+          }
+        },
       ),
     );
   }

@@ -1,13 +1,15 @@
 import 'package:dni_ecommerce_v2/api/app_api_service.dart';
 import 'package:dni_ecommerce_v2/db/category_map_dao.dart';
 import 'package:dni_ecommerce_v2/db/cateogry_dao.dart';
+import 'package:dni_ecommerce_v2/db/user_dao.dart';
 import 'package:dni_ecommerce_v2/repository/category_repository.dart';
+import 'package:dni_ecommerce_v2/repository/user_repository.dart';
 import 'package:dni_ecommerce_v2/viewobject/common/ps_value_holder.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
-import 'db/common/ps_shared_preferences.dart';
+import '../../db/common/ps_shared_preferences.dart';
 
 
 List<SingleChildWidget> providers = <SingleChildWidget>[
@@ -31,7 +33,7 @@ List<SingleChildWidget> independentProviders = <SingleChildWidget>[
   // Provider<BlogDao>.value(value: BlogDao.instance),
   // Provider<TransactionHeaderDao>.value(value: TransactionHeaderDao.instance),
   // Provider<TransactionDetailDao>.value(value: TransactionDetailDao.instance),
-  // Provider<UserDao>.value(value: UserDao.instance),
+  Provider<UserDao>.value(value: UserDao.instance),
   // Provider<UserLoginDao>.value(value: UserLoginDao.instance),
   // Provider<RelatedProductDao>.value(value: RelatedProductDao.instance),
   // Provider<CommentHeaderDao>.value(value: CommentHeaderDao.instance),
@@ -107,16 +109,16 @@ List<SingleChildWidget> _dependentProviders = <SingleChildWidget>[
   // ),
   // ProxyProvider<AppApiService, NotificationRepository>(
   //   update:
-  //       (_, AppApiService psApiService, NotificationRepository userRepository) =>
+  //       (_, AppApiService psApiService, NotificationRepository notificationRepository) =>
   //           NotificationRepository(
   //     psApiService: psApiService,
   //   ),
   // ),
-  // ProxyProvider2<AppApiService, UserDao, UserRepository>(
-  //   update: (_, AppApiService psApiService, UserDao userDao,
-  //           UserRepository? userRepository) =>
-  //       UserRepository(psApiService: psApiService, userDao: userDao),
-  // ),
+  ProxyProvider2<AppApiService, UserDao, UserRepository>(
+    update: (_, AppApiService psApiService, UserDao userDao,
+            UserRepository? userRepository) =>
+        UserRepository(psApiService: psApiService, userDao: userDao),
+  ),
   // ProxyProvider<AppApiService, ClearAllDataRepository>(
   //   update: (_, AppApiService psApiService,
   //           ClearAllDataRepository clearAllDataRepository) =>

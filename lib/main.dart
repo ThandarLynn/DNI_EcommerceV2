@@ -13,7 +13,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 // import 'package:dynamic_themes/dynamic_themes.dart';
-import 'package:dni_ecommerce_v2/app_provider_dependencies.dart';
+import 'package:dni_ecommerce_v2/provider/common/app_provider_dependencies.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // void main() {

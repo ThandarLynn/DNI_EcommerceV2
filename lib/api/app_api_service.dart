@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dni_ecommerce_v2/viewobject/common/api_status.dart';
 import 'package:dni_ecommerce_v2/config/app_config.dart';
 import 'package:dni_ecommerce_v2/viewobject/category.dart';
+import 'package:dni_ecommerce_v2/viewobject/user.dart';
 
 import 'app_api.dart';
 import 'app_url.dart';
@@ -31,28 +32,28 @@ class AppApiService extends AppApi {
   ///
   /// User Register
   ///
-  // Future<AppResource<User>> postUserRegister(
-  //     Map<dynamic, dynamic> jsonMap) async {
-  //   const String url = '${AppUrl.ps_post_ps_user_register_url}';
-  //   return await postData<User, User>(User(), url, jsonMap);
-  // }
+  Future<AppResource<User>> postUserRegister(
+      Map<dynamic, dynamic> jsonMap) async {
+    const String url = '${AppUrl.ps_post_ps_user_register_url}';
+    return await postData<User, User>(User(), url, jsonMap);
+  }
 
   ///
   /// User Verify Email
   ///
-  // Future<AppResource<User>> postUserEmailVerify(
-  //     Map<dynamic, dynamic> jsonMap) async {
-  //   const String url = '${AppUrl.ps_post_ps_user_email_verify_url}';
-  //   return await postData<User, User>(User(), url, jsonMap);
-  // }
+  Future<AppResource<User>> postUserEmailVerify(
+      Map<dynamic, dynamic> jsonMap) async {
+    const String url = '${AppUrl.ps_post_ps_user_email_verify_url}';
+    return await postData<User, User>(User(), url, jsonMap);
+  }
 
   ///
   /// User Login
   ///
-  // Future<AppResource<User>> postUserLogin(Map<dynamic, dynamic> jsonMap) async {
-  //   const String url = '${AppUrl.ps_post_ps_user_login_url}';
-  //   return await postData<User, User>(User(), url, jsonMap);
-  // }
+  Future<AppResource<User>> postUserLogin(Map<dynamic, dynamic> jsonMap) async {
+    const String url = '${AppUrl.ps_post_ps_user_login_url}';
+    return await postData<User, User>(User(), url, jsonMap);
+  }
 
 //   ///
 //   /// FB Login
@@ -100,11 +101,11 @@ class AppApiService extends AppApi {
   ///
   /// User Profile Update
   ///
-  // Future<AppResource<User>> postProfileUpdate(
-  //     Map<dynamic, dynamic> jsonMap) async {
-  //   const String url = '${AppUrl.ps_post_ps_user_update_profile_url}';
-  //   return await postData<User, User>(User(), url, jsonMap);
-  // }
+  Future<AppResource<User>> postProfileUpdate(
+      Map<dynamic, dynamic> jsonMap) async {
+    const String url = '${AppUrl.ps_post_ps_user_update_profile_url}';
+    return await postData<User, User>(User(), url, jsonMap);
+  }
 
 //   ///
 //   /// User Phone Login
@@ -144,20 +145,20 @@ class AppApiService extends AppApi {
   ///
   /// Get User
   ///
-  // Future<AppResource<List<User>>> getUser(String userId) async {
-  //   final String url =
-  //       '${AppUrl.ps_user_url}/api_key/${AppConfig.ps_api_key}/user_id/$userId';
+  Future<AppResource<List<User>>> getUser(String userId) async {
+    final String url =
+        '${AppUrl.ps_user_url}/api_key/${AppConfig.ps_api_key}/user_id/$userId';
 
-  //   return await getServerCall<User, List<User>>(User(), url);
-  // }
+    return await getServerCall<User, List<User>>(User(), url);
+  }
 
-  // Future<AppResource<User>> postImageUpload(
-  //     String userId, String platformName, File imageFile) async {
-  //   const String url = '${AppUrl.ps_image_upload_url}';
+  Future<AppResource<User>> postImageUpload(
+      String userId, String platformName, File imageFile) async {
+    const String url = '${AppUrl.ps_image_upload_url}';
 
-  //   return await postUploadImage<User, User>(
-  //       User(), url, userId, platformName, imageFile);
-  // }
+    return await postUploadImage<User, User>(
+        User(), url, userId, platformName, imageFile);
+  }
 
 //   ///
 //   /// Get Shipping Method
