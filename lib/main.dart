@@ -1,13 +1,15 @@
-// import 'package:firebase_core/firebase_core.dart';
 import 'dart:io';
-
 // import 'package:firebase_core/firebase_core.dart';
 // import 'package:firebase_messaging/firebase_messaging.dart';
+// import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+// import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:dni_ecommerce_v2/config/app_colors.dart';
 import 'dart:async';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:easy_localization/easy_localization.dart';
+// import 'package:flutter_localizations/flutter_localizations.dart';
+// import 'package:easy_localization/easy_localization.dart';
 import 'package:dni_ecommerce_v2/constant/router.dart' as router;
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +17,7 @@ import 'package:provider/single_child_widget.dart';
 // import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:dni_ecommerce_v2/provider/common/app_provider_dependencies.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'firebase_options.dart';
 // void main() {
 //   runApp(const MyApp());
 // }
@@ -31,28 +33,33 @@ Future<void> main() async {
     await prefs.setString('codeL', ''); //null);
   }
 
-  // await Firebase.initializeApp();
+  FirebaseApp app = await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  // await Firebase.initializeApp().whenComplete(() {
+  //   print("Firebase initialization attempt finished.");
+  // });
   // // NativeAdmob(adUnitID: Utils.getAdAppId());//lynn
 
-  // if (Platform.isIOS) {
-  //   FirebaseMessaging.instance.requestPermission(
-  //     alert: true,
-  //     announcement: false,
-  //     badge: true,
-  //     carPlay: false,
-  //     criticalAlert: false,
-  //     provisional: false,
-  //     sound: true,
-  //   );
-  // }
+  if (Platform.isIOS) {
+    FirebaseMessaging.instance.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+  }
 
   /// Update the iOS foreground notification presentation options to allow
   /// heads up notifications.
-  // await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-  //   alert: true,
-  //   badge: true,
-  //   sound: true,
-  // );
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
 
   //check is apple signin is available
   // await Utils.checkAppleSignInAvailable();
@@ -148,9 +155,9 @@ class _PSAppState extends State<PSApp> {
           initialRoute: '/',
           onGenerateRoute: router.generateRoute,
           localizationsDelegates: <LocalizationsDelegate<dynamic>>[
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
+            // GlobalMaterialLocalizations.delegate,
+            // GlobalWidgetsLocalizations.delegate,
+            // GlobalCupertinoLocalizations.delegate,
             // EasyLocalization.of(context).delegate,
             DefaultCupertinoLocalizations.delegate,
           ],

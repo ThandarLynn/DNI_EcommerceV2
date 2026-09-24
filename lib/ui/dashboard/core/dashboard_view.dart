@@ -8,6 +8,8 @@ import 'package:dni_ecommerce_v2/constant/route_paths.dart';
 import 'package:dni_ecommerce_v2/provider/user/user_provider.dart';
 import 'package:dni_ecommerce_v2/repository/user_repository.dart';
 import 'package:dni_ecommerce_v2/ui/dashboard/home/home_dashboard_view.dart';
+import 'package:dni_ecommerce_v2/ui/user/login/login_view.dart';
+import 'package:dni_ecommerce_v2/ui/user/profile/profile_view.dart';
 import 'package:dni_ecommerce_v2/utils/utils.dart';
 import 'package:dni_ecommerce_v2/viewobject/common/ps_value_holder.dart';
 // import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
@@ -818,95 +820,95 @@ class _HomeViewState extends State<DashboardView>
           : null,
       body: Builder(
         builder: (BuildContext context) {
-          // if (_currentIndex ==
-          //     AppConst.REQUEST_CODE__DASHBOARD_SELECT_WHICH_USER_FRAGMENT) {
-          //   return ChangeNotifierProvider<UserProvider>(
-          //     lazy: false,
-          //     create: (BuildContext context) {
-          //       final UserProvider provider = UserProvider(
-          //         repo: userRepository,
-          //         psValueHolder: valueHolder,
-          //       );
-          //       //provider.getUserLogin();
-          //       return provider;
-          //     },
-          //     child: Consumer<UserProvider>(
-          //       builder: (
-          //         BuildContext context,
-          //         UserProvider provider,
-          //         Widget? child,
-          //       ) {
-          //         if (provider == null ||
-          //             provider.psValueHolder.userIdToVerify == null ||
-          //             provider.psValueHolder.userIdToVerify == '') {
-          //           if (provider == null ||
-          //               provider.psValueHolder == null ||
-          //               provider.psValueHolder.loginUserId == null ||
-          //               provider.psValueHolder.loginUserId == '') {
-          //             return _CallLoginWidget(
-          //               currentIndex: _currentIndex,
-          //               animationController: animationController!,
-          //               animation: animation,
-          //               updateCurrentIndex: (String title, int index) {
-          //                 if (index != null) {
-          //                   updateSelectedIndexWithAnimation(
-          //                     title,
-          //                     index,
-          //                   );
-          //                 }
-          //               },
-          //               updateUserCurrentIndex:
-          //                   (String title, int index, String userId) {
-          //                 if (index != null) {
-          //                   updateSelectedIndexWithAnimation(
-          //                     title,
-          //                     index,
-          //                   );
-          //                 }
-          //                 if (userId != null) {
-          //                   _userId = userId;
-          //                   provider.psValueHolder.loginUserId = userId;
-          //                 }
-          //               },
-          //             );
-          //           } else {
-          //             return ProfileView(
-          //               scaffoldKey: scaffoldKey,
-          //               animationController: animationController,
-          //               flag: _currentIndex,
-          //             );
-          //           }
-          //         } else {
-          //           return Container();
-          //         }
-          //         // else {
-          //         //   return _CallVerifyEmailWidget(
-          //         //       animationController: animationController,
-          //         //       animation: animation,
-          //         //       currentIndex: _currentIndex,
-          //         //       userId: _userId,
-          //         //       updateCurrentIndex: (String title, int index) {
-          //         //         updateSelectedIndexWithAnimation(title, index);
-          //         //       },
-          //         //       updateUserCurrentIndex:
-          //         //           (String title, int index, String userId) async {
-          //         //         if (userId != null) {
-          //         //           _userId = userId;
-          //         //           provider.psValueHolder.loginUserId = userId;
-          //         //         }
-          //         //         setState(() {
-          //         //           appBarTitle = title;
-          //         //           _currentIndex = index;
-          //         //         });
-          //         //       });
-          //         // }
-          //       },
-          //     ),
-          //   );
-          // }
+          if (_currentIndex ==
+              AppConst.REQUEST_CODE__DASHBOARD_SELECT_WHICH_USER_FRAGMENT) {
+            return ChangeNotifierProvider<UserProvider>(
+              lazy: false,
+              create: (BuildContext context) {
+                final UserProvider provider = UserProvider(
+                  repo: userRepository,
+                  psValueHolder: valueHolder,
+                );
+                //provider.getUserLogin();
+                return provider;
+              },
+              child: Consumer<UserProvider>(
+                builder: (
+                  BuildContext context,
+                  UserProvider provider,
+                  Widget? child,
+                ) {
+                  if (provider == null ||
+                      provider.psValueHolder.userIdToVerify == null ||
+                      provider.psValueHolder.userIdToVerify == '') {
+                    if (provider == null ||
+                        provider.psValueHolder == null ||
+                        provider.psValueHolder.loginUserId == null ||
+                        provider.psValueHolder.loginUserId == '') {
+                      return _CallLoginWidget(
+                        currentIndex: _currentIndex,
+                        animationController: animationController!,
+                        animation: animation,
+                        updateCurrentIndex: (String title, int index) {
+                          if (index != null) {
+                            updateSelectedIndexWithAnimation(
+                              title,
+                              index,
+                            );
+                          }
+                        },
+                        updateUserCurrentIndex:
+                            (String title, int index, String userId) {
+                          if (index != null) {
+                            updateSelectedIndexWithAnimation(
+                              title,
+                              index,
+                            );
+                          }
+                          if (userId != null) {
+                            _userId = userId;
+                            provider.psValueHolder.loginUserId = userId;
+                          }
+                        },
+                      );
+                    } else {
+                      return ProfileView(
+                        scaffoldKey: scaffoldKey,
+                        animationController: animationController,
+                        flag: _currentIndex,
+                      );
+                    }
+                  } else {
+                    return Container();
+                  }
+                  // else {
+                  //   return _CallVerifyEmailWidget(
+                  //       animationController: animationController,
+                  //       animation: animation,
+                  //       currentIndex: _currentIndex,
+                  //       userId: _userId,
+                  //       updateCurrentIndex: (String title, int index) {
+                  //         updateSelectedIndexWithAnimation(title, index);
+                  //       },
+                  //       updateUserCurrentIndex:
+                  //           (String title, int index, String userId) async {
+                  //         if (userId != null) {
+                  //           _userId = userId;
+                  //           provider.psValueHolder.loginUserId = userId;
+                  //         }
+                  //         setState(() {
+                  //           appBarTitle = title;
+                  //           _currentIndex = index;
+                  //         });
+                  //       });
+                  // }
+                },
+              ),
+            );
+          }
           if (_currentIndex ==
               AppConst.REQUEST_CODE__DASHBOARD_SEARCH_FRAGMENT) {
-            return Text("data");
+            return Text("Search View");
             // 2nd Way
             //SearchProductProvider searchProductProvider;
 
@@ -1012,16 +1014,16 @@ class _HomeViewState extends State<DashboardView>
             //           _currentIndex = index;
             //         });
             //       });
-            // } else if (_currentIndex ==
-            //         AppConst.REQUEST_CODE__DASHBOARD_USER_PROFILE_FRAGMENT ||
-            //     _currentIndex ==
-            //         AppConst.REQUEST_CODE__MENU_USER_PROFILE_FRAGMENT) {
-            //   return ProfileView(
-            //     scaffoldKey: scaffoldKey,
-            //     animationController: animationController,
-            //     flag: _currentIndex,
-            //     userId: _userId,
-            //   );
+            } else if (_currentIndex ==
+                    AppConst.REQUEST_CODE__DASHBOARD_USER_PROFILE_FRAGMENT ||
+                _currentIndex ==
+                    AppConst.REQUEST_CODE__MENU_USER_PROFILE_FRAGMENT) {
+              return ProfileView(
+                scaffoldKey: scaffoldKey,
+                animationController: animationController,
+                flag: _currentIndex,
+                userId: _userId,
+              );
             // } else if (_currentIndex ==
             //     AppConst.REQUEST_CODE__MENU_CATEGORY_FRAGMENT) {
             //   return CategoryListView();
@@ -1206,161 +1208,161 @@ class _HomeViewState extends State<DashboardView>
             //   //           _currentIndex = index;
             //   //         });
             //   //       });
-            // } else if (_currentIndex ==
-            //         AppConst.REQUEST_CODE__DASHBOARD_LOGIN_FRAGMENT ||
-            //     _currentIndex == AppConst.REQUEST_CODE__MENU_LOGIN_FRAGMENT) {
-            //   return _CallLoginWidget(
-            //     currentIndex: _currentIndex,
-            //     animationController: animationController!,
-            //     animation: animation,
-            //     updateCurrentIndex: (String title, int index) {
-            //       updateSelectedIndexWithAnimation(title, index);
-            //     },
-            //     updateUserCurrentIndex:
-            //         (String title, int index, String userId) {
-            //       setState(() {
-            //         if (index != null) {
-            //           appBarTitle = title;
-            //           _currentIndex = index;
-            //         }
-            //       });
-            //       if (userId != null) {
-            //         _userId = userId;
-            //       }
-            //     },
-            //   );
-            // } else if (_currentIndex ==
-            //     AppConst.REQUEST_CODE__MENU_SELECT_WHICH_USER_FRAGMENT) {
-            //   return ChangeNotifierProvider<UserProvider>(
-            //     lazy: false,
-            //     create: (BuildContext context) {
-            //       final UserProvider provider = UserProvider(
-            //         repo: userRepository,
-            //         psValueHolder: valueHolder,
-            //       );
+            } else if (_currentIndex ==
+                    AppConst.REQUEST_CODE__DASHBOARD_LOGIN_FRAGMENT ||
+                _currentIndex == AppConst.REQUEST_CODE__MENU_LOGIN_FRAGMENT) {
+              return _CallLoginWidget(
+                currentIndex: _currentIndex,
+                animationController: animationController!,
+                animation: animation,
+                updateCurrentIndex: (String title, int index) {
+                  updateSelectedIndexWithAnimation(title, index);
+                },
+                updateUserCurrentIndex:
+                    (String title, int index, String userId) {
+                  setState(() {
+                    if (index != null) {
+                      appBarTitle = title;
+                      _currentIndex = index;
+                    }
+                  });
+                  if (userId != null) {
+                    _userId = userId;
+                  }
+                },
+              );
+            } else if (_currentIndex ==
+                AppConst.REQUEST_CODE__MENU_SELECT_WHICH_USER_FRAGMENT) {
+              return ChangeNotifierProvider<UserProvider>(
+                lazy: false,
+                create: (BuildContext context) {
+                  final UserProvider provider = UserProvider(
+                    repo: userRepository,
+                    psValueHolder: valueHolder,
+                  );
 
-            //       return provider;
-            //     },
-            //     child: Consumer<UserProvider>(
-            //       builder: (BuildContext context, UserProvider provider,
-            //           Widget? child) {
-            //         if (provider == null ||
-            //             provider.psValueHolder.userIdToVerify == null ||
-            //             provider.psValueHolder.userIdToVerify == '') {
-            //           if (provider == null ||
-            //               provider.psValueHolder == null ||
-            //               provider.psValueHolder.loginUserId == null ||
-            //               provider.psValueHolder.loginUserId == '') {
-            //             return Stack(
-            //               children: <Widget>[
-            //                 Container(
-            //                   color: AppColors.mainLightColorWithBlack,
-            //                   width: double.infinity,
-            //                   height: double.maxFinite,
-            //                 ),
-            //                 CustomScrollView(
-            //                   scrollDirection: Axis.vertical,
-            //                   slivers: <Widget>[
-            //                     Text('data')
-            //                     // LoginView(
-            //                     //   animationController: animationController,
-            //                     //   animation: animation,
-            //                     //   onGoogleSignInSelected: (String userId) {
-            //                     //     setState(() {
-            //                     //       _currentIndex = AppConst
-            //                     //           .REQUEST_CODE__MENU_USER_PROFILE_FRAGMENT;
-            //                     //     });
-            //                     //     _userId = userId;
-            //                     //     provider.psValueHolder.loginUserId = userId;
-            //                     //   },
-            //                     //   onFbSignInSelected: (String userId) {
-            //                     //     setState(() {
-            //                     //       _currentIndex = AppConst
-            //                     //           .REQUEST_CODE__MENU_USER_PROFILE_FRAGMENT;
-            //                     //     });
-            //                     //     _userId = userId;
-            //                     //     provider.psValueHolder.loginUserId = userId;
-            //                     //   },
-            //                     //   onPhoneSignInSelected: () {
-            //                     //     if (_currentIndex ==
-            //                     //         AppConst
-            //                     //             .REQUEST_CODE__MENU_PHONE_SIGNIN_FRAGMENT) {
-            //                     //       updateSelectedIndexWithAnimation(
-            //                     //         Utils.getString('home_phone_signin'),
-            //                     //         AppConst
-            //                     //             .REQUEST_CODE__MENU_PHONE_SIGNIN_FRAGMENT,
-            //                     //       );
-            //                     //     } else if (_currentIndex ==
-            //                     //         AppConst
-            //                     //             .REQUEST_CODE__DASHBOARD_PHONE_SIGNIN_FRAGMENT) {
-            //                     //       updateSelectedIndexWithAnimation(
-            //                     //         Utils.getString('home_phone_signin'),
-            //                     //         AppConst
-            //                     //             .REQUEST_CODE__DASHBOARD_PHONE_SIGNIN_FRAGMENT,
-            //                     //       );
-            //                     //     } else if (_currentIndex ==
-            //                     //         AppConst
-            //                     //             .REQUEST_CODE__MENU_SELECT_WHICH_USER_FRAGMENT) {
-            //                     //       updateSelectedIndexWithAnimation(
-            //                     //         Utils.getString('home_phone_signin'),
-            //                     //         AppConst
-            //                     //             .REQUEST_CODE__MENU_PHONE_SIGNIN_FRAGMENT,
-            //                     //       );
-            //                     //     } else if (_currentIndex ==
-            //                     //         AppConst
-            //                     //             .REQUEST_CODE__DASHBOARD_SELECT_WHICH_USER_FRAGMENT) {
-            //                     //       updateSelectedIndexWithAnimation(
-            //                     //         Utils.getString('home_phone_signin'),
-            //                     //         AppConst
-            //                     //             .REQUEST_CODE__DASHBOARD_PHONE_SIGNIN_FRAGMENT,
-            //                     //       );
-            //                     //     } else {
-            //                     //       updateSelectedIndexWithAnimation(
-            //                     //         Utils.getString('home_phone_signin'),
-            //                     //         AppConst
-            //                     //             .REQUEST_CODE__DASHBOARD_PHONE_SIGNIN_FRAGMENT,
-            //                     //       );
-            //                     //     }
-            //                     //   },
-            //                     //   onProfileSelected: (String userId) {
-            //                     //     setState(() {
-            //                     //       _currentIndex = AppConst
-            //                     //           .REQUEST_CODE__MENU_USER_PROFILE_FRAGMENT;
-            //                     //       _userId = userId;
-            //                     //       provider.psValueHolder.loginUserId =
-            //                     //           userId;
-            //                     //     });
-            //                     //   },
-            //                     //   onForgotPasswordSelected: () {
-            //                     //     setState(() {
-            //                     //       _currentIndex = AppConst
-            //                     //           .REQUEST_CODE__MENU_FORGOT_PASSWORD_FRAGMENT;
-            //                     //       appBarTitle = Utils.getString(
-            //                     //         'home__forgot_password',
-            //                     //       );
-            //                     //     });
-            //                     //   },
-            //                     //   onSignInSelected: () {
-            //                     //     updateSelectedIndexWithAnimation(
-            //                     //       Utils.getString('home__register'),
-            //                     //       AppConst
-            //                     //           .REQUEST_CODE__MENU_REGISTER_FRAGMENT,
-            //                     //     );
-            //                     //   },
-            //                     // ),
-            //                   ],
-            //                 ),
-            //               ],
-            //             );
-            //           } else {
-            //             return ProfileView(
-            //               scaffoldKey: scaffoldKey,
-            //               animationController: animationController,
-            //               flag: _currentIndex,
-            //             );
-            //           }
-            //         } else {
-            //           return Container();
+                  return provider;
+                },
+                child: Consumer<UserProvider>(
+                  builder: (BuildContext context, UserProvider provider,
+                      Widget? child) {
+                    if (provider == null ||
+                        provider.psValueHolder.userIdToVerify == null ||
+                        provider.psValueHolder.userIdToVerify == '') {
+                      if (provider == null ||
+                          provider.psValueHolder == null ||
+                          provider.psValueHolder.loginUserId == null ||
+                          provider.psValueHolder.loginUserId == '') {
+                        return Stack(
+                          children: <Widget>[
+                            Container(
+                              color: AppColors.mainLightColorWithBlack,
+                              width: double.infinity,
+                              height: double.maxFinite,
+                            ),
+                            CustomScrollView(
+                              scrollDirection: Axis.vertical,
+                              slivers: <Widget>[
+                                Text('data')
+                                // LoginView(
+                                //   animationController: animationController,
+                                //   animation: animation,
+                                //   onGoogleSignInSelected: (String userId) {
+                                //     setState(() {
+                                //       _currentIndex = AppConst
+                                //           .REQUEST_CODE__MENU_USER_PROFILE_FRAGMENT;
+                                //     });
+                                //     _userId = userId;
+                                //     provider.psValueHolder.loginUserId = userId;
+                                //   },
+                                //   onFbSignInSelected: (String userId) {
+                                //     setState(() {
+                                //       _currentIndex = AppConst
+                                //           .REQUEST_CODE__MENU_USER_PROFILE_FRAGMENT;
+                                //     });
+                                //     _userId = userId;
+                                //     provider.psValueHolder.loginUserId = userId;
+                                //   },
+                                //   onPhoneSignInSelected: () {
+                                //     if (_currentIndex ==
+                                //         AppConst
+                                //             .REQUEST_CODE__MENU_PHONE_SIGNIN_FRAGMENT) {
+                                //       updateSelectedIndexWithAnimation(
+                                //         Utils.getString('home_phone_signin'),
+                                //         AppConst
+                                //             .REQUEST_CODE__MENU_PHONE_SIGNIN_FRAGMENT,
+                                //       );
+                                //     } else if (_currentIndex ==
+                                //         AppConst
+                                //             .REQUEST_CODE__DASHBOARD_PHONE_SIGNIN_FRAGMENT) {
+                                //       updateSelectedIndexWithAnimation(
+                                //         Utils.getString('home_phone_signin'),
+                                //         AppConst
+                                //             .REQUEST_CODE__DASHBOARD_PHONE_SIGNIN_FRAGMENT,
+                                //       );
+                                //     } else if (_currentIndex ==
+                                //         AppConst
+                                //             .REQUEST_CODE__MENU_SELECT_WHICH_USER_FRAGMENT) {
+                                //       updateSelectedIndexWithAnimation(
+                                //         Utils.getString('home_phone_signin'),
+                                //         AppConst
+                                //             .REQUEST_CODE__MENU_PHONE_SIGNIN_FRAGMENT,
+                                //       );
+                                //     } else if (_currentIndex ==
+                                //         AppConst
+                                //             .REQUEST_CODE__DASHBOARD_SELECT_WHICH_USER_FRAGMENT) {
+                                //       updateSelectedIndexWithAnimation(
+                                //         Utils.getString('home_phone_signin'),
+                                //         AppConst
+                                //             .REQUEST_CODE__DASHBOARD_PHONE_SIGNIN_FRAGMENT,
+                                //       );
+                                //     } else {
+                                //       updateSelectedIndexWithAnimation(
+                                //         Utils.getString('home_phone_signin'),
+                                //         AppConst
+                                //             .REQUEST_CODE__DASHBOARD_PHONE_SIGNIN_FRAGMENT,
+                                //       );
+                                //     }
+                                //   },
+                                //   onProfileSelected: (String userId) {
+                                //     setState(() {
+                                //       _currentIndex = AppConst
+                                //           .REQUEST_CODE__MENU_USER_PROFILE_FRAGMENT;
+                                //       _userId = userId;
+                                //       provider.psValueHolder.loginUserId =
+                                //           userId;
+                                //     });
+                                //   },
+                                //   onForgotPasswordSelected: () {
+                                //     setState(() {
+                                //       _currentIndex = AppConst
+                                //           .REQUEST_CODE__MENU_FORGOT_PASSWORD_FRAGMENT;
+                                //       appBarTitle = Utils.getString(
+                                //         'home__forgot_password',
+                                //       );
+                                //     });
+                                //   },
+                                //   onSignInSelected: () {
+                                //     updateSelectedIndexWithAnimation(
+                                //       Utils.getString('home__register'),
+                                //       AppConst
+                                //           .REQUEST_CODE__MENU_REGISTER_FRAGMENT,
+                                //     );
+                                //   },
+                                // ),
+                              ],
+                            ),
+                          ],
+                        );
+                      } else {
+                        return ProfileView(
+                          scaffoldKey: scaffoldKey,
+                          animationController: animationController,
+                          flag: _currentIndex,
+                        );
+                      }
+                    } else {
+                      return Container();
             //           // return _CallVerifyEmailWidget(
             //           //     animationController: animationController,
             //           //     animation: animation,
@@ -1380,10 +1382,10 @@ class _HomeViewState extends State<DashboardView>
             //           //         _currentIndex = index;
             //           //       });
             //           //     });
-            //         }
-            //       },
-            //     ),
-            //   );
+                    }
+                  },
+                ),
+              );
             //   // } else if (_currentIndex ==
             //   //     AppConst.REQUEST_CODE__MENU_FAVOURITE_FRAGMENT) {
             //   //   return HistoryListView(animationController: animationController)(
@@ -1434,151 +1436,151 @@ class _HomeViewState extends State<DashboardView>
   }
 }
 
-// class _CallLoginWidget extends StatelessWidget {
-//   const _CallLoginWidget({
-//     required this.animationController,
-//     required this.animation,
-//     required this.updateCurrentIndex,
-//     required this.updateUserCurrentIndex,
-//     required this.currentIndex,
-//   });
-//   final Function updateCurrentIndex;
-//   final Function updateUserCurrentIndex;
-//   final AnimationController animationController;
-//   final Animation<double> animation;
-//   final int currentIndex;
-//   @override
-//   Widget build(BuildContext context) {
-//     return Stack(
-//       children: <Widget>[
-//         Container(
-//           color: AppColors
-//               .mainLightColorWithBlack, //ps_wtheme_core_background_color,
-//           width: double.infinity,
-//           height: double.maxFinite,
-//         ),
-//         CustomScrollView(
-//           scrollDirection: Axis.vertical,
-//           slivers: <Widget>[
-//             LoginView(
-//               animationController: animationController,
-//               animation: animation,
-//               onGoogleSignInSelected: (String userId) {
-//                 if (currentIndex ==
-//                     AppConst.REQUEST_CODE__MENU_LOGIN_FRAGMENT) {
-//                   updateUserCurrentIndex(
-//                     Utils.getString('home__menu_drawer_profile'),
-//                     AppConst.REQUEST_CODE__MENU_USER_PROFILE_FRAGMENT,
-//                     userId,
-//                   );
-//                 } else {
-//                   updateUserCurrentIndex(
-//                     Utils.getString('home__menu_drawer_profile'),
-//                     AppConst.REQUEST_CODE__DASHBOARD_USER_PROFILE_FRAGMENT,
-//                     userId,
-//                   );
-//                 }
-//               },
-//               onFbSignInSelected: (String userId) {
-//                 if (currentIndex ==
-//                     AppConst.REQUEST_CODE__MENU_LOGIN_FRAGMENT) {
-//                   updateUserCurrentIndex(
-//                     Utils.getString('home__menu_drawer_profile'),
-//                     AppConst.REQUEST_CODE__MENU_USER_PROFILE_FRAGMENT,
-//                     userId,
-//                   );
-//                 } else {
-//                   updateUserCurrentIndex(
-//                     Utils.getString('home__menu_drawer_profile'),
-//                     AppConst.REQUEST_CODE__DASHBOARD_USER_PROFILE_FRAGMENT,
-//                     userId,
-//                   );
-//                 }
-//               },
-//               onPhoneSignInSelected: () {
-//                 if (currentIndex ==
-//                     AppConst.REQUEST_CODE__MENU_LOGIN_FRAGMENT) {
-//                   updateCurrentIndex(
-//                     Utils.getString('home_phone_signin'),
-//                     AppConst.REQUEST_CODE__MENU_PHONE_SIGNIN_FRAGMENT,
-//                   );
-//                 } else if (currentIndex ==
-//                     AppConst.REQUEST_CODE__DASHBOARD_LOGIN_FRAGMENT) {
-//                   updateCurrentIndex(
-//                     Utils.getString('home_phone_signin'),
-//                     AppConst.REQUEST_CODE__DASHBOARD_PHONE_SIGNIN_FRAGMENT,
-//                   );
-//                 } else if (currentIndex ==
-//                     AppConst.REQUEST_CODE__MENU_SELECT_WHICH_USER_FRAGMENT) {
-//                   updateCurrentIndex(
-//                     Utils.getString('home_phone_signin'),
-//                     AppConst.REQUEST_CODE__MENU_PHONE_SIGNIN_FRAGMENT,
-//                   );
-//                 } else if (currentIndex ==
-//                     AppConst
-//                         .REQUEST_CODE__DASHBOARD_SELECT_WHICH_USER_FRAGMENT) {
-//                   updateCurrentIndex(
-//                     Utils.getString('home_phone_signin'),
-//                     AppConst.REQUEST_CODE__DASHBOARD_PHONE_SIGNIN_FRAGMENT,
-//                   );
-//                 } else {
-//                   updateCurrentIndex(
-//                     Utils.getString('home_phone_signin'),
-//                     AppConst.REQUEST_CODE__DASHBOARD_PHONE_SIGNIN_FRAGMENT,
-//                   );
-//                 }
-//               },
-//               onProfileSelected: (String userId) {
-//                 if (currentIndex ==
-//                     AppConst.REQUEST_CODE__MENU_LOGIN_FRAGMENT) {
-//                   updateUserCurrentIndex(
-//                     Utils.getString('home__menu_drawer_profile'),
-//                     AppConst.REQUEST_CODE__MENU_USER_PROFILE_FRAGMENT,
-//                     userId,
-//                   );
-//                 } else {
-//                   updateUserCurrentIndex(
-//                     Utils.getString('home__menu_drawer_profile'),
-//                     AppConst.REQUEST_CODE__DASHBOARD_USER_PROFILE_FRAGMENT,
-//                     userId,
-//                   );
-//                 }
-//               },
-//               onForgotPasswordSelected: () {
-//                 if (currentIndex ==
-//                     AppConst.REQUEST_CODE__MENU_LOGIN_FRAGMENT) {
-//                   updateCurrentIndex(
-//                     Utils.getString('home__forgot_password'),
-//                     AppConst.REQUEST_CODE__MENU_FORGOT_PASSWORD_FRAGMENT,
-//                   );
-//                 } else {
-//                   updateCurrentIndex(
-//                     Utils.getString('home__forgot_password'),
-//                     AppConst.REQUEST_CODE__DASHBOARD_FORGOT_PASSWORD_FRAGMENT,
-//                   );
-//                 }
-//               },
-//               onSignInSelected: () {
-//                 if (currentIndex ==
-//                     AppConst.REQUEST_CODE__MENU_LOGIN_FRAGMENT) {
-//                   updateCurrentIndex(
-//                     Utils.getString('home__register'),
-//                     AppConst.REQUEST_CODE__MENU_REGISTER_FRAGMENT,
-//                   );
-//                 } else {
-//                   updateCurrentIndex(
-//                     Utils.getString('home__register'),
-//                     AppConst.REQUEST_CODE__DASHBOARD_REGISTER_FRAGMENT,
-//                   );
-//                 }
-//               },
-//             ),
-//           ],
-//         ),
-//       ],
-//     );
-//   }
-// }
+class _CallLoginWidget extends StatelessWidget {
+  const _CallLoginWidget({
+    required this.animationController,
+    required this.animation,
+    required this.updateCurrentIndex,
+    required this.updateUserCurrentIndex,
+    required this.currentIndex,
+  });
+  final Function updateCurrentIndex;
+  final Function updateUserCurrentIndex;
+  final AnimationController animationController;
+  final Animation<double> animation;
+  final int currentIndex;
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        Container(
+          color: AppColors
+              .mainLightColorWithBlack, //ps_wtheme_core_background_color,
+          width: double.infinity,
+          height: double.maxFinite,
+        ),
+        CustomScrollView(
+          scrollDirection: Axis.vertical,
+          slivers: <Widget>[
+            LoginView(
+              animationController: animationController,
+              animation: animation,
+              onGoogleSignInSelected: (String userId) {
+                if (currentIndex ==
+                    AppConst.REQUEST_CODE__MENU_LOGIN_FRAGMENT) {
+                  updateUserCurrentIndex(
+                    Utils.getString('home__menu_drawer_profile'),
+                    AppConst.REQUEST_CODE__MENU_USER_PROFILE_FRAGMENT,
+                    userId,
+                  );
+                } else {
+                  updateUserCurrentIndex(
+                    Utils.getString('home__menu_drawer_profile'),
+                    AppConst.REQUEST_CODE__DASHBOARD_USER_PROFILE_FRAGMENT,
+                    userId,
+                  );
+                }
+              },
+              onFbSignInSelected: (String userId) {
+                if (currentIndex ==
+                    AppConst.REQUEST_CODE__MENU_LOGIN_FRAGMENT) {
+                  updateUserCurrentIndex(
+                    Utils.getString('home__menu_drawer_profile'),
+                    AppConst.REQUEST_CODE__MENU_USER_PROFILE_FRAGMENT,
+                    userId,
+                  );
+                } else {
+                  updateUserCurrentIndex(
+                    Utils.getString('home__menu_drawer_profile'),
+                    AppConst.REQUEST_CODE__DASHBOARD_USER_PROFILE_FRAGMENT,
+                    userId,
+                  );
+                }
+              },
+              onPhoneSignInSelected: () {
+                if (currentIndex ==
+                    AppConst.REQUEST_CODE__MENU_LOGIN_FRAGMENT) {
+                  updateCurrentIndex(
+                    Utils.getString('home_phone_signin'),
+                    AppConst.REQUEST_CODE__MENU_PHONE_SIGNIN_FRAGMENT,
+                  );
+                } else if (currentIndex ==
+                    AppConst.REQUEST_CODE__DASHBOARD_LOGIN_FRAGMENT) {
+                  updateCurrentIndex(
+                    Utils.getString('home_phone_signin'),
+                    AppConst.REQUEST_CODE__DASHBOARD_PHONE_SIGNIN_FRAGMENT,
+                  );
+                } else if (currentIndex ==
+                    AppConst.REQUEST_CODE__MENU_SELECT_WHICH_USER_FRAGMENT) {
+                  updateCurrentIndex(
+                    Utils.getString('home_phone_signin'),
+                    AppConst.REQUEST_CODE__MENU_PHONE_SIGNIN_FRAGMENT,
+                  );
+                } else if (currentIndex ==
+                    AppConst
+                        .REQUEST_CODE__DASHBOARD_SELECT_WHICH_USER_FRAGMENT) {
+                  updateCurrentIndex(
+                    Utils.getString('home_phone_signin'),
+                    AppConst.REQUEST_CODE__DASHBOARD_PHONE_SIGNIN_FRAGMENT,
+                  );
+                } else {
+                  updateCurrentIndex(
+                    Utils.getString('home_phone_signin'),
+                    AppConst.REQUEST_CODE__DASHBOARD_PHONE_SIGNIN_FRAGMENT,
+                  );
+                }
+              },
+              onProfileSelected: (String userId) {
+                if (currentIndex ==
+                    AppConst.REQUEST_CODE__MENU_LOGIN_FRAGMENT) {
+                  updateUserCurrentIndex(
+                    Utils.getString('home__menu_drawer_profile'),
+                    AppConst.REQUEST_CODE__MENU_USER_PROFILE_FRAGMENT,
+                    userId,
+                  );
+                } else {
+                  updateUserCurrentIndex(
+                    Utils.getString('home__menu_drawer_profile'),
+                    AppConst.REQUEST_CODE__DASHBOARD_USER_PROFILE_FRAGMENT,
+                    userId,
+                  );
+                }
+              },
+              onForgotPasswordSelected: () {
+                if (currentIndex ==
+                    AppConst.REQUEST_CODE__MENU_LOGIN_FRAGMENT) {
+                  updateCurrentIndex(
+                    Utils.getString('home__forgot_password'),
+                    AppConst.REQUEST_CODE__MENU_FORGOT_PASSWORD_FRAGMENT,
+                  );
+                } else {
+                  updateCurrentIndex(
+                    Utils.getString('home__forgot_password'),
+                    AppConst.REQUEST_CODE__DASHBOARD_FORGOT_PASSWORD_FRAGMENT,
+                  );
+                }
+              },
+              onSignInSelected: () {
+                if (currentIndex ==
+                    AppConst.REQUEST_CODE__MENU_LOGIN_FRAGMENT) {
+                  updateCurrentIndex(
+                    Utils.getString('home__register'),
+                    AppConst.REQUEST_CODE__MENU_REGISTER_FRAGMENT,
+                  );
+                } else {
+                  updateCurrentIndex(
+                    Utils.getString('home__register'),
+                    AppConst.REQUEST_CODE__DASHBOARD_REGISTER_FRAGMENT,
+                  );
+                }
+              },
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
 
 // class _CallVerifyPhoneWidget extends StatelessWidget {
 //   const _CallVerifyPhoneWidget(

@@ -27,7 +27,7 @@ class CategoryProvider extends AppProvider {
     subscription = categoryListStream.stream
         .listen((AppResource<List<Category>> resource) {
       if (resource.data != null) {
-        updateOffset(10);
+        updateOffset(resource.data.length);
       }
 
       _categoryList = resource;

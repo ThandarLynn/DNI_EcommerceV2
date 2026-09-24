@@ -108,7 +108,7 @@ class _HomeDashboardViewState extends State<HomeDashboardView> {
           //     }),
         ],
         child: Container(
-          // color: AppColors.coreBackgroundColor,
+          color: AppColors.coreBackgroundColor,
           child: CustomScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
             scrollDirection: Axis.vertical,
@@ -541,7 +541,7 @@ class __HomeCategoryHorizontalListWidgetState
                             } else {
                               return CategoryHorizontalListItem(
                                 category:
-                                    categoryProvider.categoryList.data![index],
+                                    categoryProvider.categoryList.data[index],
                                 onTap: () {
                                   // final ProductParameterHolder
                                   //     productParameterHolder =
